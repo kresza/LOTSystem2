@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "passenger")
 public class Passenger {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "flight_id") //mapowanie obiektowo relacyjne
-    private String flightID;
+    private Long flightID;
 
     @Column(name = "first_name") //mapowanie obiektowo relacyjne
     private String firstName;
@@ -24,7 +25,7 @@ public class Passenger {
     public Passenger() {
     }
 
-    public Passenger(Long id, String flightID, String firstName, String lastName, String telephone) {
+    public Passenger(Long id, Long flightID, String firstName, String lastName, String telephone) {
         this.id = id;
         this.flightID = flightID;
         this.firstName = firstName;
@@ -40,11 +41,11 @@ public class Passenger {
         this.id = id;
     }
 
-    public String getFlightID() {
+    public Long getFlightID() {
         return flightID;
     }
 
-    public void setFlightID(String flightID) {
+    public void setFlightID(Long flightID) {
         this.flightID = flightID;
     }
 
@@ -82,4 +83,8 @@ public class Passenger {
                 ", telephone='" + telephone + '\'' +
                 '}';
     }
+
+
+
+
 }

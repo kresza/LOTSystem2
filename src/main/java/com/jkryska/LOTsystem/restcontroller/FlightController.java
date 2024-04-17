@@ -2,6 +2,7 @@ package com.jkryska.LOTsystem.restcontroller;
 
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.repository.FlightRepository;
+import com.jkryska.LOTsystem.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api_flight")
 public class FlightController {
+    private PassengerRepository passengerRepository;
     @Autowired
     FlightRepository flightRepository;
 

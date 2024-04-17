@@ -84,6 +84,8 @@ public class Flight {
         this.seats = seats;
     }
 
+
+
     @Override
     public String toString() {
         return "Flight{" +
