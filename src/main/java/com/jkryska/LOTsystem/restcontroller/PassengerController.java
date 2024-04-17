@@ -52,5 +52,7 @@ public class PassengerController {
     @DeleteMapping("/delete_all_passengers")
     void deleteAllPassengers(){
         passengerRepository.deleteAll();
+        // jak usuwa sie pasazerow to nie zlicza siedzen - trzeba to naprawic
+        // lepiej zamiast tego zaimplementowac cos usuwa wszystkich pasazerow z danego lotu
     }
 }
