@@ -12,16 +12,16 @@ public class Flight {
     @Column(name = "flight_number") //mapowanie obiektowo relacyjne
     private String flightNumber;
 
-    @Column(name = "starting_place") //mapowanie obiektowo relacyjne
+    @Column(name = "starting_place")
     private String startingPlace;
 
-    @Column(name = "destination") //mapowanie obiektowo relacyjne
+    @Column(name = "destination")
     private String destination;
 
-    @Column(name = "flight_date") //mapowanie obiektowo relacyjne
+    @Column(name = "flight_date")
     private String flightDate;
 
-    @Column(name = "seats") //mapowanie obiektowo relacyjne
+    @Column(name = "seats")
     private int seats;
 
     public Flight() {

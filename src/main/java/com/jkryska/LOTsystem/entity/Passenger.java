@@ -13,13 +13,13 @@ public class Passenger {
     @Column(name = "flight_id") //mapowanie obiektowo relacyjne
     private Long flightID;
 
-    @Column(name = "first_name") //mapowanie obiektowo relacyjne
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name") //mapowanie obiektowo relacyjne
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "telephone") //mapowanie obiektowo relacyjne
+    @Column(name = "telephone")
     private String telephone;
 
     public Passenger() {
