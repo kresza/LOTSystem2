@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Flight</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Delete Flight</h1>
+    <form action="/delete_flight" method="post" class="mt-3">
+        <div class="form-group">
+            <label for="flightId">Enter Flight ID to delete:</label>
+            <input type="text" class="form-control" id="flightId" name="id" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Delete Flight</button>
+    </form>
+    <!-- Optional: Display error message if flight ID does not exist -->
+    <p class="mt-3" style="color: red;">
+        [[${error}]]
+    </p>
+</div>
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Flight Number</th>
+        <th scope="col">Starting Place</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Flight Date</th>
+        <th scope="col">Seats</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Pętla Thymeleaf, która wyświetli dane lotów -->
+    <tr th:each="flight : ${flights}">
+        <td th:text="${flight.id}">ID</td>
+        <td th:text="${flight.flightNumber}">Flight Number</td>
+        <td th:text="${flight.startingPlace}">Starting Place</td>
+        <td th:text="${flight.destination}">Destination</td>
+        <td th:text="${flight.flightDate}">Flight Date</td>
+        <td th:text="${flight.seats}">Seats</td>
+    </tr>
+    </tbody>
+</table>
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
