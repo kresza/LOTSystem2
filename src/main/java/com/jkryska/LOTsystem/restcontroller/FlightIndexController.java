@@ -49,14 +49,14 @@ public class FlightIndexController {
         flightRepository.deleteById(id);
         return "redirect:/flights";
     }
-//    update flight
+//   show update flight
 @GetMapping("/update_flight")
 public String getUpdateFlight(Model model){
     List<Flight> flights = flightRepository.findAll();
     model.addAttribute("flights", flights);
     return "update_flight";
 }
-
+// update flight in database
 @PostMapping("/update_flight")
     public String updateFlight(@RequestParam("id") Long id,
                                @RequestParam(value = "flightNumber", required = false ) String flightNumber,
@@ -69,10 +69,10 @@ public String getUpdateFlight(Model model){
                 Flight actualFlight = flight.get();
 
                 if(flightNumber != null && !flightNumber.isEmpty()) actualFlight.setFlightNumber(flightNumber);
-                if(startingPlace != null) actualFlight.setSeats(seats);
+                if(startingPlace != null && !startingPlace.isEmpty()) actualFlight.setStartingPlace(startingPlace);
                 if(destination != null && !destination.isEmpty()) actualFlight.setDestination(destination);
                 if(flightDate != null && !flightDate.isEmpty()) actualFlight.setFlightDate(flightDate);
-                if(seats != null && seats >=0) {
+                if(seats != null) {
                     actualFlight.setSeats(seats);
                 }
                 flightRepository.save(actualFlight);

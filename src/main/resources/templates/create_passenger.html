@@ -1,0 +1,29 @@
+<form action="/create_passenger" method="post" class="needs-validation" novalidate>
+    <div class="mb-3">
+        <label for="firstName" class="form-label">First Name:</label>
+        <input type="text" id="firstName" name="firstName" class="form-control" required>
+        <div class="invalid-feedback">
+            Please provide a first name.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" class="form-control" required>
+        <div class="invalid-feedback">
+            Please provide a last name.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="telephone" class="form-label">Telephone:</label>
+        <input type="tel" id="telephone" name="telephone" class="form-control" required>
+        <div class="invalid-feedback">
+            Please provide a telephone number.
+        </div>
+    </div>
+
+    <input type="hidden" id="flightID" name="flightID" value="1"> <!-- Przykładowa wartość flightID, możesz dostosować -->
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

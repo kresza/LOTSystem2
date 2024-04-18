@@ -38,7 +38,7 @@
 
         <div class="mb-3">
             <label for="flightDate" class="form-label">Flight Date:</label>
-            <input type="datetime-local" id="flightDate" name="flightDate" th:field="*{flightDate}" class="form-control" required>
+            <input type="datetime-local" id="flightDate" name="flightDate" th:field="*{flightDate}" class="form-control" min="0000-00-00T00:00" max="9999-12-31T23:59" required >
             <div class="invalid-feedback">
                 Please provide a valid flight date.
             </div>
