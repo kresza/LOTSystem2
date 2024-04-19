@@ -30,7 +30,7 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Pętla Thymeleaf, która wyświetli dane lotów -->
+    <!-- Thymeleaf flight loop -->
     <tr th:each="flight : ${flights}">
         <td th:text="${flight.id}">ID</td>
         <td th:text="${flight.flightNumber}">Flight Number</td>

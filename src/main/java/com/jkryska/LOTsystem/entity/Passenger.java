@@ -10,16 +10,16 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "flight_id") //mapowanie obiektowo relacyjne
+    @Column(name = "flight_id", nullable = false) //mapowanie obiektowo relacyjne
     private Long flightID;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "telephone")
+    @Column(name = "telephone", nullable = false)
     private String telephone;
 
     public Passenger() {

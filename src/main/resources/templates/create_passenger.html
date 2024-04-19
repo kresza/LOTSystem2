@@ -1,29 +1,57 @@
-<form action="/create_passenger" method="post" class="needs-validation" novalidate>
-    <div class="mb-3">
-        <label for="firstName" class="form-label">First Name:</label>
-        <input type="text" id="firstName" name="firstName" class="form-control" required>
-        <div class="invalid-feedback">
-            Please provide a first name.
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <form action="/create_passenger" method="post" class="needs-validation" novalidate>
+
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name:</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a first name.
+            </div>
         </div>
-    </div>
 
-    <div class="mb-3">
-        <label for="lastName" class="form-label">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" class="form-control" required>
-        <div class="invalid-feedback">
-            Please provide a last name.
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a last name.
+            </div>
         </div>
-    </div>
-
-    <div class="mb-3">
-        <label for="telephone" class="form-label">Telephone:</label>
-        <input type="tel" id="telephone" name="telephone" class="form-control" required>
-        <div class="invalid-feedback">
-            Please provide a telephone number.
+        <label for="flightID" class="form-label">Select a flight ID:</label>
+        <select id="flightID" name="flightID" class="form-select">
+            <option th:each="flight : ${flights}" th:value="${flight.id}" th:text="${flight.id}"></option>
+        </select>
+        <div class="mb-3">
+            <label for="telephone" class="form-label">Telephone:</label>
+            <input type="tel" id="telephone" name="telephone" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a telephone number.
+            </div>
         </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <a href="/" class="btn btn-primary">Back</a>
     </div>
+</div>
 
-    <input type="hidden" id="flightID" name="flightID" value="1"> <!-- Przykładowa wartość flightID, możesz dostosować -->
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<!-- Bootstrap JS, Popper.js, and jQuery (for Bootstrap functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
