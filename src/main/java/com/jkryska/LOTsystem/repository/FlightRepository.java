@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     // decremental seats
@@ -17,6 +19,35 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     @Modifying
     @Query("UPDATE Flight f SET f.seats = f.seats + 1 WHERE f.id = :flightId")
     void incrementSeatsByFlightId(@Param("flightId") Long flightId);
+
+    @Query("SELECT f FROM Flight f ORDER BY " +
+            "CASE :param " +
+            "WHEN 'flightNumber' THEN f.flightNumber " +
+            "WHEN 'startingPlace' THEN f.startingPlace " +
+            "WHEN 'destination' THEN f.destination " +
+            "WHEN 'flightDate' THEN f.flightDate " +
+            "WHEN 'seats' THEN f.seats " +
+            "END ASC")
+    List<Flight> sortFlightsByASC(@Param("param") String param);
+
+    @Query("SELECT f FROM Flight f ORDER BY " +
+            "CASE :param " +
+            "WHEN 'flightNumber' THEN f.flightNumber " +
+            "WHEN 'startingPlace' THEN f.startingPlace " +
+            "WHEN 'destination' THEN f.destination " +
+            "WHEN 'flightDate' THEN f.flightDate " +
+            "WHEN 'seats' THEN f.seats " +
+            "END DESC")
+    List<Flight> sortFlightsByDESC(@Param("param") String param);
+
+
+
+//    @Query("SELECT * from flight order by ? desc")
+//    List<Flight> sortFlightsByDESC(@Param("flightNumber") String flightNumber,
+//                               @Param("startingPlace") String startingPlace,
+//                               @Param("destination") String destination,
+//                               @Param("flightDate") String flightDate,
+//                               @Param("seats") Integer seats);
 
 
 }

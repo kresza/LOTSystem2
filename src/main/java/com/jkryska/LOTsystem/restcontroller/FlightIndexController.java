@@ -45,7 +45,6 @@ public class FlightIndexController {
 //    delete from database
     @PostMapping("/delete_flight")
     String deleteFlight(@RequestParam("id") Long id){
-        Optional<Flight> flight = flightRepository.findById(id);
         flightRepository.deleteById(id);
         return "redirect:/flights";
     }
@@ -82,7 +81,20 @@ public String getUpdateFlight(Model model){
         return "redirect:/flights";
     }
 
+    @GetMapping("/flights/ASC/{param}")
+    public String sortingASC(@PathVariable String param, Model model){
+        List<Flight> flights = flightRepository.sortFlightsByASC(param);
+        model.addAttribute("flights", flights);
+        return "flights";
+    }
 
+    @GetMapping("/flights/DESC/{param}")
+    public String sortingDESC(@PathVariable String param, Model model){
+        List<Flight> flights = flightRepository.sortFlightsByDESC(param);
+        model.addAttribute("flights", flights);
+        return "flights";
+
+    }
 
 
 

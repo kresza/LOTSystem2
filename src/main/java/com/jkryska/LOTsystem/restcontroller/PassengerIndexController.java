@@ -8,11 +8,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PassengerIndexController {
@@ -42,11 +41,46 @@ public class PassengerIndexController {
         passengerRepository.save(passenger);
         return "redirect:/passengers";
     }
-    @GetMapping("/delete_passenger")
-    public String getDeletePassenger(Model model){
+
+    @Transactional
+    @PostMapping(value = "/passengers/{id}")
+    String deletePassenger(@PathVariable Long id){
+        Optional<Passenger> passenger = passengerRepository.findById(id);
+        if(passenger.isPresent()){
+            Passenger localpassenger = passenger.get();
+            System.out.println("Present");
+            flightRepository.incrementSeatsByFlightId(localpassenger.getFlightID());
+        }
+        passengerRepository.deleteById(id);
+        return "redirect:/passengers";
+    }
+    @GetMapping("/update_passenger")
+    public String getShowPassenger(Model model){
         List<Passenger> passengers = passengerRepository.findAll();
         model.addAttribute("passengers", passengers);
-        return "/delete_passenger";
+        return "/update_passenger";
     }
+    // update passenger in database
+    @PostMapping("/update_passenger")
+    public String updateFlight(@RequestParam("id") Long id,
+                               @RequestParam(value = "flightID", required = false ) Long flightID,
+                               @RequestParam(value = "firstName", required = false) String firstName,
+                               @RequestParam(value = "lastName", required = false) String lastName,
+                               @RequestParam(value = "telephone", required = false) String telephone){
+        Optional<Passenger> passenger = passengerRepository.findById(id);
+        if(passenger.isPresent()){
+            Passenger actualPassenger = passenger.get();
+
+            if(flightID != null ) actualPassenger.setFlightID(flightID);
+            if(firstName != null && !firstName.isEmpty()) actualPassenger.setFirstName(firstName);
+            if(lastName != null && !lastName.isEmpty()) actualPassenger.setLastName(lastName);
+            if(telephone != null && !telephone.isEmpty()) actualPassenger.setTelephone(telephone);
+            passengerRepository.save(actualPassenger);
+
+        }
+        return "redirect:/passengers";
+    }
+
+
 
 }

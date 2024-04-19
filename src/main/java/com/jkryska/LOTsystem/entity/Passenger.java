@@ -1,6 +1,8 @@
 package com.jkryska.LOTsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+
 
 @Entity
 @Table(name = "passenger")
@@ -20,6 +22,7 @@ public class Passenger {
     private String lastName;
 
     @Column(name = "telephone", nullable = false)
+    @Pattern(regexp="\\d{9}", message="Telephone must be 9 digits")
     private String telephone;
 
     public Passenger() {
