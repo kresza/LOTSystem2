@@ -1,4 +1,4 @@
-package com.jkryska.LOTsystem.restcontroller;
+package com.jkryska.LOTsystem.controller;
 
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.entity.Passenger;

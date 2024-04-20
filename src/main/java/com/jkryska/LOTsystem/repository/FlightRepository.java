@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
+
     // decremental seats
     @Modifying
     @Query("UPDATE Flight f SET f.seats = f.seats - 1 WHERE f.id = :flightId")
@@ -39,15 +40,4 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "WHEN 'seats' THEN f.seats " +
             "END DESC")
     List<Flight> sortFlightsByDESC(@Param("param") String param);
-
-
-
-//    @Query("SELECT * from flight order by ? desc")
-//    List<Flight> sortFlightsByDESC(@Param("flightNumber") String flightNumber,
-//                               @Param("startingPlace") String startingPlace,
-//                               @Param("destination") String destination,
-//                               @Param("flightDate") String flightDate,
-//                               @Param("seats") Integer seats);
-
-
 }
