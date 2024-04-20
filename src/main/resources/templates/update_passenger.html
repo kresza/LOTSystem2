@@ -12,7 +12,7 @@
     <h1 class="mt-5">Update Passenger</h1>
     <form action="#" th:action="@{/update_passenger}" method="post" class="mt-3">
         <div class="mb-3">
-            <label for="passengerID" class="form-label">Select a flight to update:</label>
+            <label for="passengerID" class="form-label">Select passenger id:</label>
             <select id="passengerID" name="id" class="form-select">
                 <option th:each="passenger : ${passengers}" th:value="${passenger.id}" th:text="${passenger.id}"></option>
             </select>

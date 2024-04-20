@@ -6,6 +6,13 @@
     <title>Delete Flight</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    .table-container {
+        max-width: 1150px;
+        margin: 0 auto;
+    }
+}
+</style>
 <body>
 <div th:replace="~{navbar}"></div>
 <div class="container">
@@ -14,14 +21,17 @@
         <div class="form-group">
             <label for="flightId">Enter Flight ID to delete:</label>
             <br>
-            <span>Attention !!!! if you delete a flight, you will delete all passengers belonging to that flight</span>
+            <span class="bg-light">Attention !!!! if you delete a flight, you will delete all passengers belonging to that flight</span>
             <input type="text" class="form-control" id="flightId" name="id" required>
         </div>
-        <button type="submit" class="btn btn-danger">Delete Flight</button>
+        <div>
+            <button type="submit" class="btn btn-danger">Delete Flight</button>
+        </div>
     </form>
 </div>
 <br>
 <br>
+<div class="table-container">
 <table class="table">
     <thead class="thead-light">
     <tr>
@@ -45,9 +55,15 @@
     </tr>
     </tbody>
 </table>
-<a href="/" class="btn btn-primary">Back to Home Page</a>
+</div>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <a href="/" class="btn btn-primary">Back to Home Page</a>
+    </div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

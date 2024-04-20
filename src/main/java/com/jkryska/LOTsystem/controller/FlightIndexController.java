@@ -4,13 +4,17 @@ import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class FlightIndexController {
@@ -36,7 +40,10 @@ public class FlightIndexController {
     }
 // save flight to database
     @PostMapping("/create_flight")
-    public String saveFlight(@ModelAttribute("flight") Flight flight){
+    public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result){
+        if(result.hasErrors()){
+            return "/create_flight";
+        }
         flightRepository.save(flight);
         return "redirect:/flights";
     }
@@ -134,7 +141,12 @@ public String getUpdateFlight(Model model){
             else if(flightNumber != null && !flightNumber.isEmpty() && flight.getFlightNumber().equals(flightNumber)) resultFlights.add(flight);
             else if(startingPlace != null && !startingPlace.isEmpty() && flight.getStartingPlace().equals(startingPlace)) resultFlights.add(flight);
             else if(destination != null &&!destination.isEmpty() && flight.getDestination().equals(destination)) resultFlights.add(flight);
-            else if(flightDate != null &&!flightDate.isEmpty() && flight.getFlightDate().equals(flightDate)) resultFlights.add(flight);
+            else if(flightDate != null &&!flightDate.isEmpty()) {
+                StringBuilder stringBuilder = new StringBuilder(flight.getFlightDate());
+                StringBuilder stringBuilder2 = new StringBuilder(flightDate);
+                stringBuilder.delete(10, 19);
+                if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
+            }
             else if(seats != null && flight.getSeats() == seats) resultFlights.add(flight);
         }
         if(resultFlights.isEmpty()){
@@ -145,12 +157,7 @@ public String getUpdateFlight(Model model){
         return "/search_flight";
 
     }
-    @GetMapping("/search_flight_result")
-    public String searchFlightResult(Model model){
-        List<Flight> flights = (List<Flight>) model.getAttribute("flights");
-        model.addAttribute("flights", flights);
-        return "search_flight_result";
-    }
+
 
 
 }
