@@ -5,6 +5,7 @@ import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -40,8 +41,9 @@ public class FlightIndexController {
     }
 // save flight to database
     @PostMapping("/create_flight")
-    public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result){
+    public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result, Model model){
         if(result.hasErrors()){
+            model.addAttribute("flight", flight);
             return "/create_flight";
         }
         flightRepository.save(flight);
@@ -52,11 +54,28 @@ public class FlightIndexController {
     public String getDeleteFlight(Model model){
         List<Flight> flights = flightRepository.findAll();
         model.addAttribute("flights", flights);
+        model.addAttribute("flight", flightRepository.findAll());
         return "/delete_flight";
     }
 //    delete from database
     @PostMapping("/delete_flight")
-    String deleteFlight(@RequestParam("id") Long id){
+    String deleteFlight(@ModelAttribute("flight")  Flight flight,
+                        BindingResult result,
+                        @RequestParam("id") @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Id must be a number") Long id,
+                        Model model){
+        if (result.hasFieldErrors("id")){
+            model.addAttribute("flights", flightRepository.findAll());
+            model.addAttribute("flight", flightRepository.findAll());
+            return "/delete_flight";
+        }
+
+        Optional<Flight> optionalFlight = flightRepository.findById(id);
+        if (optionalFlight.isEmpty()) {
+            model.addAttribute("error", "Flight with ID " + id + " does not exist");
+            model.addAttribute("flights", flightRepository.findAll());
+            return "/delete_flight";
+        }
+
         List<Passenger>  passengers = passengerRepository.findAll();
         for (var passenger : passengers){
             if(passenger.getFlightID().equals(id)) passengerRepository.deleteById(passenger.getId());

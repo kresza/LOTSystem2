@@ -22,12 +22,17 @@
             <label for="flightId">Enter Flight ID to delete:</label>
             <br>
             <span class="bg-light">Attention !!!! if you delete a flight, you will delete all passengers belonging to that flight</span>
-            <input type="text" class="form-control" id="flightId" name="id" required>
+            <input type="text" class="form-control" id="flightId" name="id" required pattern="[0-9]+" title="Please enter a valid numeric Flight ID">
+            <div class="invalid-feedback">
+                Please enter a valid numeric Flight ID.
+            </div>
+            <span th:if="${error}" class="text-danger" th:text="${error}"></span>
         </div>
         <div>
             <button type="submit" class="btn btn-danger">Delete Flight</button>
         </div>
     </form>
+
 </div>
 <br>
 <br>

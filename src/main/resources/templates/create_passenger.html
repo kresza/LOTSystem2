@@ -15,7 +15,7 @@
         <div class="mb-3">
             <label for="firstName" class="form-label">First Name:</label>
             <input type="text" id="firstName" name="firstName" class="form-control" required>
-            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a first name.
             </div>
@@ -24,7 +24,7 @@
         <div class="mb-3">
             <label for="lastName" class="form-label">Last Name:</label>
             <input type="text" id="lastName" name="lastName" class="form-control" required>
-            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a last name.
             </div>
@@ -33,10 +33,11 @@
         <select id="flightID" name="flightID" class="form-select">
             <option th:each="flight : ${flights}" th:value="${flight.id}" th:text="${flight.id}"></option>
         </select>
+        <span th:if="${error}" class="text-danger" th:text="${error}"></span>
         <div class="mb-3">
             <label for="telephone" class="form-label">Telephone:</label>
             <input type="tel" id="telephone" name="telephone" class="form-control" required>
-            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a telephone number.
             </div>

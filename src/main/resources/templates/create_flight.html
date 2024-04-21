@@ -15,7 +15,7 @@
         <div class="mb-3">
             <label for="flightNumber" class="form-label">Flight Number:</label>
             <input type="text" id="flightNumber" name="flightNumber" th:field="*{flightNumber}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('flightNumber')}" th:errors="*{flightNumber}"></span>
+            <span th:if="${#fields.hasErrors('flightNumber')}" th:errors="*{flightNumber}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a valid flight number.
             </div>
@@ -24,7 +24,7 @@
         <div class="mb-3">
             <label for="startingPlace" class="form-label">Starting Place:</label>
             <input type="text" id="startingPlace" name="startingPlace" th:field="*{startingPlace}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('startingPlace')}" th:errors="*{startingPlace}"></span>
+            <span th:if="${#fields.hasErrors('startingPlace')}" th:errors="*{startingPlace}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a valid starting place.
             </div>
@@ -33,7 +33,7 @@
         <div class="mb-3">
             <label for="destination" class="form-label">Destination:</label>
             <input type="text" id="destination" name="destination" th:field="*{destination}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></span>
+            <span th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a valid destination.
             </div>
@@ -42,7 +42,7 @@
         <div class="mb-3">
             <label for="flightDate" class="form-label">Flight Date:</label>
             <input type="datetime-local" id="flightDate" name="flightDate" th:field="*{flightDate}" class="form-control" min="0000-00-00T00:00" max="9999-12-31T23:59" required >
-            <span th:if="${#fields.hasErrors('flightDate')}" th:errors="*{flightDate}"></span>
+            <span th:if="${#fields.hasErrors('flightDate')}" th:errors="*{flightDate}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a valid flight date.
             </div>
@@ -51,7 +51,7 @@
         <div class="mb-3">
             <label for="seats" class="form-label">Seats:</label>
             <input type="number" id="seats" name="seats" th:field="*{seats}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('seats')}" th:errors="*{seats}"></span>
+            <span th:if="${#fields.hasErrors('seats')}" th:errors="*{seats}" class="text-danger"></span>
             <div class="invalid-feedback">
                 Please provide a valid number of seats.
             </div>

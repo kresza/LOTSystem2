@@ -20,22 +20,22 @@
         <div class="mb-3">
             <label for="flightID" class="form-label">(optional) New flightID:</label>
             <input type="text" id="flightID" name="flightID" class="form-control">
-            <span th:if="${#fields.hasErrors('flightID')}" th:errors="*{flightID}"></span>
+            <span th:if="${#fields.hasErrors('flightID')}" th:errors="*{flightID}" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="firstName" class="form-label">(optional) New first Name:</label>
             <input type="text" id="firstName" name="firstName" class="form-control">
-            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="last_name" class="form-label"> (optional) New last name:</label>
             <input type="text" id="last_name" name="lastName" class="form-control">
-            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="telephone" class="form-label">(optional) telephone:</label>
             <input type="text" id="telephone" name="telephone" class="form-control">
-            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Update Passenger</button>
     </form>

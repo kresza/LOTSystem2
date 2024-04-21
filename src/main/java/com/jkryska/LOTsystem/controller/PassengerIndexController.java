@@ -45,6 +45,18 @@ public class PassengerIndexController {
             model.addAttribute("passenger", passenger);
             return "/create_passenger";
         }
+        Optional<Flight> optionalFlight = flightRepository.findById(passenger.getFlightID());
+        if(optionalFlight.isPresent())
+        {
+            Flight flight = optionalFlight.get();
+            if(flight.getSeats() <= 0){
+                List<Flight> flights = flightRepository.findAll();
+                model.addAttribute("flights", flights);
+                model.addAttribute("passenger", passenger);
+                model.addAttribute("error", "Selected flight is full. Please choose another flight.");
+                return "/create_passenger";
+            }
+        }
         flightRepository.decrementSeatsByFlightId(passenger.getFlightID()); // seats decremental
         passengerRepository.save(passenger);
         return "redirect:/passengers";
@@ -80,29 +92,36 @@ public class PassengerIndexController {
                                   BindingResult result,
                                   Model model) {
 
+
+
         Optional<Passenger> optionalPassenger = passengerRepository.findById(id);
         if (optionalPassenger.isPresent()) {
             Passenger actualPassenger = optionalPassenger.get();
 
-            // Przeprowadź walidację tylko dla pól, które nie są puste
+
             if (flightID != null) {
-                // Walidacja pola flightID
+                Optional<Flight> optionalFlight = flightRepository.findById(flightID);
+                if (optionalFlight.isEmpty()) {
+                    model.addAttribute("error", "Flight with ID " + flightID + " does not exist");
+                    model.addAttribute("passengers", passengerRepository.findAll());
+                    return "/update_passenger";
+                }
                 if (result.hasFieldErrors("flightID")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("flightIDErrors", result);
                     return "/update_passenger";
                 }
                 actualPassenger.setFlightID(flightID);
             }
             if (firstName != null && !firstName.isEmpty()) {
-                // Walidacja pola firstName
                 if (result.hasFieldErrors("firstName")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("firstNameErrors", result);
                     return "/update_passenger";
                 }
                 actualPassenger.setFirstName(firstName);
             }
             if (lastName != null && !lastName.isEmpty()) {
-                // Walidacja pola lastName
                 if (result.hasFieldErrors("lastName")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
                     return "/update_passenger";
@@ -110,7 +129,6 @@ public class PassengerIndexController {
                 actualPassenger.setLastName(lastName);
             }
             if (telephone != null && !telephone.isEmpty()) {
-                // Walidacja pola telephone
                 if (result.hasFieldErrors("telephone")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
                     return "/update_passenger";

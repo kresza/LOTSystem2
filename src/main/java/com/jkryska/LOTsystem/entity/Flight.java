@@ -7,6 +7,8 @@ import jakarta.validation.constraints.*;
 @Table(name = "flight")
 public class Flight {
     @Id
+    @Positive(message = "Only positive numbers are allowed!")
+    @Digits(integer = 10, fraction = 0, message = "Only numbers with 0 fractional digits are allowed!")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,15 +33,16 @@ public class Flight {
     private String flightDate;
 
 
+    @NotNull(message = "cannot be empty")
     @Positive(message = "Only positive numbers are allowed!")
     @Digits(integer = 10, fraction = 0, message = "Only numbers with 0 fractional digits are allowed!")
     @Column(name = "seats")
-    private int seats;
+    private Integer seats;
 
     public Flight() {
     }
 
-    public Flight(long id, String flightNumber, String staringPlace, String destination, String flightDate, int seats) {
+    public Flight(Long id, String flightNumber, String staringPlace, String destination, String flightDate, Integer seats) {
         this.id = id;
         this.flightNumber = flightNumber;
         this.startingPlace = staringPlace;
@@ -52,7 +55,7 @@ public class Flight {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,11 +91,11 @@ public class Flight {
         this.flightDate = flightDate;
     }
 
-    public int getSeats() {
+    public Integer getSeats() {
         return seats;
     }
 
-    public void setSeats(int seats) {
+    public void setSeats(Integer seats) {
         this.seats = seats;
     }
 
