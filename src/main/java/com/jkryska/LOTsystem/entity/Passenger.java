@@ -15,7 +15,7 @@ public class Passenger {
     @NotNull(message = "cannot be empty")
     @Positive(message = "Only positive numbers are allowed!")
     @Digits(integer = 10, fraction = 0, message = "Only numbers with 0 fractional digits are allowed!")
-    @Column(name = "flight_id", nullable = false) //mapowanie obiektowo relacyjne
+    @Column(name = "flight_id", nullable = false)
     private Long flightID;
 
     @NotEmpty(message = "cannot be empty")

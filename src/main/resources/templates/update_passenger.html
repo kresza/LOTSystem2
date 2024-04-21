@@ -19,8 +19,9 @@
         </div>
         <div class="mb-3">
             <label for="flightID" class="form-label">(optional) New flightID:</label>
-            <input type="text" id="flightID" name="flightID" class="form-control">
+            <input type="number" id="flightID" name="flightID" class="form-control" pattern="[0-9]*" th:field="*{flightID}">
             <span th:if="${#fields.hasErrors('flightID')}" th:errors="*{flightID}" class="text-danger"></span>
+            <span th:if="${error}" class="text-danger" th:text="${error}"></span>
         </div>
         <div class="mb-3">
             <label for="firstName" class="form-label">(optional) New first Name:</label>
@@ -34,7 +35,7 @@
         </div>
         <div class="mb-3">
             <label for="telephone" class="form-label">(optional) telephone:</label>
-            <input type="text" id="telephone" name="telephone" class="form-control">
+            <input type="number" id="telephone" name="telephone" class="form-control">
             <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Update Passenger</button>

@@ -82,16 +82,16 @@ public class PassengerIndexController {
         return "update_passenger";
     }
 
+    @Transactional
     @PostMapping("/update_passenger")
     public String updatePassenger(@RequestParam("id") Long id,
-                                  @RequestParam(value = "flightID", required = false) Long flightID,
+                                  @RequestParam(value = "flightID", required = false)  Long flightID,
                                   @RequestParam(value = "firstName", required = false) String firstName,
                                   @RequestParam(value = "lastName", required = false) String lastName,
                                   @RequestParam(value = "telephone", required = false) String telephone,
                                   @ModelAttribute("passenger") @Valid Passenger passenger,
                                   BindingResult result,
                                   Model model) {
-
 
 
         Optional<Passenger> optionalPassenger = passengerRepository.findById(id);
@@ -104,18 +104,17 @@ public class PassengerIndexController {
                 if (optionalFlight.isEmpty()) {
                     model.addAttribute("error", "Flight with ID " + flightID + " does not exist");
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("passenger", passenger);
                     return "/update_passenger";
                 }
-                if (result.hasFieldErrors("flightID")) {
-                    model.addAttribute("passengers", passengerRepository.findAll());
-                    model.addAttribute("flightIDErrors", result);
-                    return "/update_passenger";
-                }
+                flightRepository.decrementSeatsByFlightId(flightID);
+                flightRepository.incrementSeatsByFlightId(actualPassenger.getFlightID());
                 actualPassenger.setFlightID(flightID);
             }
             if (firstName != null && !firstName.isEmpty()) {
                 if (result.hasFieldErrors("firstName")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("passenger", passenger);
                     model.addAttribute("firstNameErrors", result);
                     return "/update_passenger";
                 }
@@ -124,6 +123,7 @@ public class PassengerIndexController {
             if (lastName != null && !lastName.isEmpty()) {
                 if (result.hasFieldErrors("lastName")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("passenger", passenger);
                     return "/update_passenger";
                 }
                 actualPassenger.setLastName(lastName);
@@ -131,6 +131,7 @@ public class PassengerIndexController {
             if (telephone != null && !telephone.isEmpty()) {
                 if (result.hasFieldErrors("telephone")) {
                     model.addAttribute("passengers", passengerRepository.findAll());
+                    model.addAttribute("passenger", passenger);
                     return "/update_passenger";
                 }
                 actualPassenger.setTelephone(telephone);
