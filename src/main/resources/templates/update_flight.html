@@ -19,13 +19,9 @@
         </div>
         <div class="mb-3">
             <label for="flightNumber" class="form-label">(optional) New Flight Number:</label>
-            <br>
-            <span>If you do not want to change flight number, please select the same number as above</span>
-            <select id="flightNumber" name="flightNumber" class="form-select">
-                <option th:each="flight : ${flights}" th:value="${flight.flightNumber}" th:text="${flight.flightNumber}"></option>
-            </select>
+            <input type="text" id="flightNumber" name="flightNumber" class="form-control">
             <span th:if="${#fields.hasErrors('flightNumber')}" th:errors="*{flightNumber}" class="text-danger"></span>
-<!--            <span th:if="${error}" class="text-danger" th:text="${error}"></span>-->
+            <span th:if="${error}" class="text-danger" th:text="${error}"></span>
         </div>
         <div class="mb-3">
             <label for="startingPlace" class="form-label">(optional) New Starting Place:</label>
