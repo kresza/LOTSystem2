@@ -66,36 +66,69 @@ public class FlightIndexController {
     }
 //   show update flight
 @GetMapping("/update_flight")
-public String getUpdateFlight(Model model){
+public String getUpdateFlight( Model model){
     List<Flight> flights = flightRepository.findAll();
     model.addAttribute("flights", flights);
+    model.addAttribute("flight", new Flight());
     return "update_flight";
 }
 // update flight in database
 @PostMapping("/update_flight")
-    public String updateFlight(@RequestParam("id") Long id,
+    public String updateFlight(@RequestParam("id")  Long id,
                                @RequestParam(value = "flightNumber", required = false ) String flightNumber,
                                @RequestParam(value = "startingPlace", required = false) String startingPlace,
                                @RequestParam(value = "destination", required = false) String destination,
                                @RequestParam(value = "flightDate", required = false) String flightDate,
-                               @RequestParam(value = "seats", required = false) Integer seats){
-            Optional<Flight> flight = flightRepository.findById(id);
-            if(flight.isPresent()){
-                Flight actualFlight = flight.get();
+                               @RequestParam(value = "seats", required = false) Integer seats,
+                               @ModelAttribute("flight") @Valid Flight flight,
+                               BindingResult result,
+                               Model model) {
 
-                if(flightNumber != null && !flightNumber.isEmpty()) actualFlight.setFlightNumber(flightNumber);
-                if(startingPlace != null && !startingPlace.isEmpty()) actualFlight.setStartingPlace(startingPlace);
-                if(destination != null && !destination.isEmpty()) actualFlight.setDestination(destination);
-                if(flightDate != null && !flightDate.isEmpty()) actualFlight.setFlightDate(flightDate);
-                if(seats != null) {
-                    actualFlight.setSeats(seats);
-                }
-                flightRepository.save(actualFlight);
+    Optional<Flight> optionalFlight = flightRepository.findById(id);
+    if (optionalFlight.isPresent()) {
+        Flight actualFlight = optionalFlight.get();
 
-
+        if (flightNumber != null && !flightNumber.isEmpty()) {
+            if (result.hasFieldErrors("flightNumber")) {
+                model.addAttribute("flights", flightRepository.findAll());
+                return "/update_flight";
             }
+            actualFlight.setFlightNumber(flightNumber);
+        }
+        if (startingPlace != null && !startingPlace.isEmpty()) {
+            if (result.hasFieldErrors("startingPlace")) {
+                model.addAttribute("flights", flightRepository.findAll());
+                return "/update_flight";
+            }
+            actualFlight.setStartingPlace(startingPlace);
+        }
+        if (destination != null && !destination.isEmpty()) {
+            if (result.hasFieldErrors("destination")) {
+                model.addAttribute("flights", flightRepository.findAll());
+                return "/update_flight";
+            }
+            actualFlight.setDestination(destination);
+        }
+            if (flightDate != null && !flightDate.isEmpty()) {
+                if (result.hasFieldErrors("flightDate")) {
+                    model.addAttribute("flights", flightRepository.findAll());
+                    return "/update_flight";
+                }
+                actualFlight.setFlightDate(flightDate);
+            }
+            if (seats != null) {
+                if (result.hasFieldErrors("seats")) {
+                    model.addAttribute("flights", flightRepository.findAll());
+                    return "/update_flight";
+                }
+                actualFlight.setSeats(seats);
+            }
+
+            flightRepository.save(actualFlight);
+        }
         return "redirect:/flights";
     }
+
 
     @GetMapping("/flights/ASC/{param}")
     public String sortingASC(@PathVariable String param, Model model){

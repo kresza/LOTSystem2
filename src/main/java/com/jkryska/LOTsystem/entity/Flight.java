@@ -1,10 +1,7 @@
 package com.jkryska.LOTsystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "flight")
@@ -13,24 +10,26 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotEmpty(message = "cannot be empty")
     @Pattern(regexp = "[a-zA-Z0-9]+", message = "Only alphabetical letters and numbers are allowed!")
     @Column(name = "flight_number") //mapowanie obiektowo relacyjne
     private String flightNumber;
 
-    @NotNull
+    @NotEmpty(message = "cannot be empty")
     @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ]+", message = "Only alphabetical letters are allowed!!")
     @Column(name = "starting_place")
     private String startingPlace;
 
-    @NotNull
+    @NotEmpty(message = "cannot be empty")
     @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ]+", message = "Only alphabetical letters are allowed!!")
     @Column(name = "destination")
     private String destination;
 
 //    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$", message = "only YYYY-MM-DD HH:MM:SS format")
+    @NotEmpty(message = "cannot be empty")
     @Column(name = "flight_date")
     private String flightDate;
+
 
     @Positive(message = "Only positive numbers are allowed!")
     @Digits(integer = 10, fraction = 0, message = "Only numbers with 0 fractional digits are allowed!")

@@ -19,35 +19,30 @@
             <select data-column="flightNumber" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
-                <option value="line">---</option>
             </select>
         </th>
         <th scope="col">Starting Place
             <select data-column="startingPlace" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
-                <option value="line">---</option>
             </select>
         </th>
         <th scope="col">Destination
             <select data-column="destination" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
-                <option value="line">---</option>
             </select>
         </th>
         <th scope="col">Flight Date
             <select data-column="flightDate" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
-                <option value="line">---</option>
             </select>
         </th>
         <th scope="col">Seats
             <select data-column="seats" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
-                <option value="line">---</option>
             </select>
         </th>
     </tr>
@@ -70,10 +65,6 @@
         var column = selectElement.dataset.column;
         var sortOrder = selectElement.value;
 
-        if (sortOrder === 'line') {
-            resetAllSelectsToLine();
-            return;
-        }
         sessionStorage.setItem('sortColumn', column);
         sessionStorage.setItem('sortOrder', sortOrder);
         var ascUrl = '/flights/ASC/' + column;
