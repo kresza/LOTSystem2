@@ -18,12 +18,12 @@ public class Flight {
     private String flightNumber;
 
     @NotEmpty(message = "cannot be empty")
-    @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ]+", message = "Only alphabetical letters are allowed!!")
+    @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ ]+", message = "Only alphabetical letters are allowed!!")
     @Column(name = "starting_place")
     private String startingPlace;
 
     @NotEmpty(message = "cannot be empty")
-    @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ]+", message = "Only alphabetical letters are allowed!!")
+    @Pattern(regexp = "[a-zA-ZęĘóÓąĄśŚłŁżŻźŹćĆńŃ ]+", message = "Only alphabetical letters are allowed!!")
     @Column(name = "destination")
     private String destination;
 

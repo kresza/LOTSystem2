@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
-public class FlightIndexController {
+public class FlightController {
     @Autowired
     private FlightRepository flightRepository;
 
     @Autowired
     private PassengerRepository passengerRepository;
 
-//    show flights list
+//  show flights list
     @GetMapping("/flights")
     public String getFlights(Model model) {
         List<Flight> flights = flightRepository.findAll();
@@ -45,6 +46,14 @@ public class FlightIndexController {
         if(result.hasErrors()){
             model.addAttribute("flight", flight);
             return "/create_flight";
+        }
+        List<Flight> flights = flightRepository.findAll();
+        for(var localFlight : flights){
+            if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
+                model.addAttribute("flight", flight);
+                model.addAttribute("error", "Flight Number already exist");
+                return "/create_flight";
+            }
         }
         flightRepository.save(flight);
         return "redirect:/flights";
@@ -81,7 +90,9 @@ public class FlightIndexController {
             if(passenger.getFlightID().equals(id)) passengerRepository.deleteById(passenger.getId());
         }
         flightRepository.deleteById(id);
-        return "redirect:/flights";
+        model.addAttribute("flights", flightRepository.findAll());
+        model.addAttribute("flight", flightRepository.findAll());
+        return "/delete_flight";
     }
 //   show update flight
 @GetMapping("/update_flight")
@@ -111,6 +122,15 @@ public String getUpdateFlight( Model model){
             if (result.hasFieldErrors("flightNumber")) {
                 model.addAttribute("flights", flightRepository.findAll());
                 return "/update_flight";
+            }
+            List<Flight> flights = flightRepository.findAll();
+            for(var localFlight : flights){
+                if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
+                    model.addAttribute("flight", flight);
+                    model.addAttribute("flights", flights);
+                    model.addAttribute("error", "Flight Number already exist");
+                    return "/update_flight";
+                }
             }
             actualFlight.setFlightNumber(flightNumber);
         }
@@ -165,13 +185,6 @@ public String getUpdateFlight( Model model){
     }
 
 
-//    @GetMapping("/search_flight")
-//    public String getSearchFlight(Model model){
-//        List<Flight> flights = flightRepository.findAll();
-//        model.addAttribute("flights", flights);
-//        return "search_flight";
-//    }
-
     @DateTimeFormat
     @GetMapping("/search_flight")
     public String searchFlight(@RequestParam(value = "id", required = false) Long id,
@@ -199,7 +212,7 @@ public String getUpdateFlight( Model model){
                 stringBuilder.delete(10, 19);
                 if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
             }
-            else if(seats != null && flight.getSeats() == seats) resultFlights.add(flight);
+            else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
         }
         if(resultFlights.isEmpty()){
             model.addAttribute("flights", flights);
@@ -209,7 +222,4 @@ public String getUpdateFlight( Model model){
         return "/search_flight";
 
     }
-
-
-
 }
