@@ -92,7 +92,7 @@ public class PassengerController {
                                   @ModelAttribute("passenger") @Valid Passenger passenger,
                                   BindingResult result,
                                   Model model) {
-//MODEL
+
         model.addAttribute("passengers", passengerRepository.findAll());
         model.addAttribute("passenger", passenger);
 
