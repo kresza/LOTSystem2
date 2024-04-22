@@ -41,7 +41,6 @@ public class PassengerController {
     public String savePassenger(@ModelAttribute("passenger") @Valid Passenger passenger, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("flights", flightRepository.findAll());
-            model.addAttribute("passenger", passenger);
             return "/create_passenger";
         }
         Optional<Flight> optionalFlight = flightRepository.findById(passenger.getFlightID());
@@ -50,7 +49,6 @@ public class PassengerController {
             Flight flight = optionalFlight.get();
             if(flight.getSeats() <= 0){
                 model.addAttribute("flights", flightRepository.findAll());
-                model.addAttribute("passenger", passenger);
                 model.addAttribute("error", "Selected flight is full. Please choose another flight.");
                 return "/create_passenger";
             }
@@ -94,7 +92,6 @@ public class PassengerController {
                                   Model model) {
 
         model.addAttribute("passengers", passengerRepository.findAll());
-        model.addAttribute("passenger", passenger);
 
         Optional<Passenger> optionalPassenger = passengerRepository.findById(id);
         if (optionalPassenger.isPresent()) {

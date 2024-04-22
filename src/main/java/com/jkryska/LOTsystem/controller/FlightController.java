@@ -89,10 +89,9 @@ public class FlightController {
     }
 //   show update flight
 @GetMapping("/update_flight")
-public String getUpdateFlight( Model model){
-    List<Flight> flights = flightRepository.findAll();
-    model.addAttribute("flights", flights);
-    model.addAttribute("flight", new Flight());
+public String getUpdateFlight(@ModelAttribute Flight flight, Model model){
+    model.addAttribute("flights", flightRepository.findAll());
+    model.addAttribute("flight", flight);
     return "update_flight";
 }
 // update flight in database
