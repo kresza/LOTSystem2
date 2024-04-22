@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,25 +22,25 @@ public class PassengerController {
     @Autowired
     PassengerRepository passengerRepository;
 
+//    show passengers
     @GetMapping("/passengers")
     public String allPassengers(Model model){
-        List<Passenger> passengers = passengerRepository.findAll();
-            model.addAttribute("passengers", passengers);
+        model.addAttribute("passengers", passengerRepository.findAll());
         return "/passengers";
     }
+//    show create passenger form
     @GetMapping("/create_passenger")
     public String createPassenger(Model model){
-        List<Flight> flights = flightRepository.findAll();
-        model.addAttribute("flights", flights);
+        model.addAttribute("flights", flightRepository.findAll());
         model.addAttribute("passenger", new Passenger());
         return "create_passenger";
     }
+//    save passenger in database
     @Transactional
     @PostMapping("/create_passenger")
     public String savePassenger(@ModelAttribute("passenger") @Valid Passenger passenger, BindingResult result, Model model){
         if(result.hasErrors()){
-            List<Flight> flights = flightRepository.findAll();
-            model.addAttribute("flights", flights);
+            model.addAttribute("flights", flightRepository.findAll());
             model.addAttribute("passenger", passenger);
             return "/create_passenger";
         }
@@ -50,38 +49,39 @@ public class PassengerController {
         {
             Flight flight = optionalFlight.get();
             if(flight.getSeats() <= 0){
-                List<Flight> flights = flightRepository.findAll();
-                model.addAttribute("flights", flights);
+                model.addAttribute("flights", flightRepository.findAll());
                 model.addAttribute("passenger", passenger);
                 model.addAttribute("error", "Selected flight is full. Please choose another flight.");
                 return "/create_passenger";
             }
         }
-        flightRepository.decrementSeatsByFlightId(passenger.getFlightID()); // seats decremental
+        flightRepository.decrementSeatsByFlightId(passenger.getFlightID());
         passengerRepository.save(passenger);
         return "redirect:/passengers";
     }
 
+//    delete passenger
     @Transactional
     @PostMapping(value = "/passengers/{id}")
     String deletePassenger(@PathVariable Long id){
         Optional<Passenger> passenger = passengerRepository.findById(id);
         if(passenger.isPresent()){
             Passenger localpassenger = passenger.get();
-            System.out.println("Present");
             flightRepository.incrementSeatsByFlightId(localpassenger.getFlightID());
         }
         passengerRepository.deleteById(id);
         return "redirect:/passengers";
     }
+
+//    show update passenger form
     @GetMapping("/update_passenger")
     public String getUpdatePassenger(@ModelAttribute Passenger passenger, Model model) {
-        List<Passenger> passengers = passengerRepository.findAll();
-        model.addAttribute("passengers", passengers);
+        model.addAttribute("passengers", passengerRepository.findAll());
         model.addAttribute("passenger", passenger);
         return "update_passenger";
     }
 
+//    update passenger in database
     @Transactional
     @PostMapping("/update_passenger")
     public String updatePassenger(@RequestParam("id") Long id,

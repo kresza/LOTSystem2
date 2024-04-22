@@ -1,7 +1,6 @@
 package com.jkryska.LOTsystem.controller;
 
 import com.jkryska.LOTsystem.entity.Flight;
-import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
 import jakarta.validation.Valid;
@@ -26,47 +25,43 @@ public class FlightController {
     @Autowired
     private PassengerRepository passengerRepository;
 
+
+
 //  show flights list
     @GetMapping("/flights")
     public String getFlights(Model model) {
-        List<Flight> flights = flightRepository.findAll();
-        model.addAttribute("flights", flights);
+        model.addAttribute("flights", flightRepository.findAll());
         return "flights";
     }
 // show create flight page
     @GetMapping("/create_flight")
     public String createFlight(Model model){
-        Flight flight = new Flight();
-        model.addAttribute("flight", flight);
+        model.addAttribute("flight", new Flight());
         return "create_flight";
     }
 // save flight to database
     @PostMapping("/create_flight")
     public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result, Model model){
         if(result.hasErrors()){
-            model.addAttribute("flight", flight);
             return "/create_flight";
         }
-        List<Flight> flights = flightRepository.findAll();
-        for(var localFlight : flights){
+        for(var localFlight : flightRepository.findAll()){
             if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
-                model.addAttribute("flight", flight);
                 model.addAttribute("error", "Flight Number already exist");
                 return "/create_flight";
             }
         }
         flightRepository.save(flight);
         return "redirect:/flights";
+
     }
 // show delete flight form
     @GetMapping("/delete_flight")
     public String getDeleteFlight(Model model){
-        List<Flight> flights = flightRepository.findAll();
-        model.addAttribute("flights", flights);
-        model.addAttribute("flight", flightRepository.findAll());
+        model.addAttribute("flights", flightRepository.findAll());
         return "/delete_flight";
     }
-//    delete from database
+// delete from database
     @PostMapping("/delete_flight")
     String deleteFlight(@ModelAttribute("flight")  Flight flight,
                         BindingResult result,
@@ -74,7 +69,6 @@ public class FlightController {
                         Model model){
         if (result.hasFieldErrors("id")){
             model.addAttribute("flights", flightRepository.findAll());
-            model.addAttribute("flight", flightRepository.findAll());
             return "/delete_flight";
         }
 
@@ -85,13 +79,12 @@ public class FlightController {
             return "/delete_flight";
         }
 
-        List<Passenger>  passengers = passengerRepository.findAll();
-        for (var passenger : passengers){
+
+        for (var passenger : passengerRepository.findAll()){
             if(passenger.getFlightID().equals(id)) passengerRepository.deleteById(passenger.getId());
         }
         flightRepository.deleteById(id);
         model.addAttribute("flights", flightRepository.findAll());
-        model.addAttribute("flight", flightRepository.findAll());
         return "/delete_flight";
     }
 //   show update flight
@@ -126,7 +119,6 @@ public String getUpdateFlight( Model model){
             List<Flight> flights = flightRepository.findAll();
             for(var localFlight : flights){
                 if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
-                    model.addAttribute("flight", flight);
                     model.addAttribute("flights", flights);
                     model.addAttribute("error", "Flight Number already exist");
                     return "/update_flight";
@@ -168,23 +160,21 @@ public String getUpdateFlight( Model model){
         return "redirect:/flights";
     }
 
-
+//    sort ASC flights
     @GetMapping("/flights/ASC/{param}")
     public String sortingASC(@PathVariable String param, Model model){
-        List<Flight> flights = flightRepository.sortFlightsByASC(param);
-        model.addAttribute("flights", flights);
+        model.addAttribute("flights", flightRepository.sortFlightsByASC(param));
         return "flights";
     }
 
+//    sort DESC flights
     @GetMapping("/flights/DESC/{param}")
     public String sortingDESC(@PathVariable String param, Model model){
-        List<Flight> flights = flightRepository.sortFlightsByDESC(param);
-        model.addAttribute("flights", flights);
+        model.addAttribute("flights", flightRepository.sortFlightsByDESC(param));
         return "flights";
 
     }
-
-
+// show search flight
     @DateTimeFormat
     @GetMapping("/search_flight")
     public String searchFlight(@RequestParam(value = "id", required = false) Long id,
@@ -195,11 +185,8 @@ public String getUpdateFlight( Model model){
                                @RequestParam(value = "seats", required = false) Integer seats,
                                Model model){
 
-
-
-        List<Flight> flights = flightRepository.findAll();
         List<Flight> resultFlights = new ArrayList<>() {};
-        for(var flight : flights){
+        for(var flight : flightRepository.findAll()){
             if(id != null && flight.getId() == id) {
                 resultFlights.add(flight);
             }
@@ -215,7 +202,7 @@ public String getUpdateFlight( Model model){
             else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
         }
         if(resultFlights.isEmpty()){
-            model.addAttribute("flights", flights);
+            model.addAttribute("flights", flightRepository.findAll());
             return "/search_flight";
         }
         model.addAttribute("flights", resultFlights);

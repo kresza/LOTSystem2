@@ -6,6 +6,7 @@
     <title>Passenger Form</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.worldvectorlogo.com/logos/lot-2.svg">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="" th:href="@{/css/styles.css}" />
 </head>
 <body>
 <div th:replace="~{navbar}"></div>
@@ -16,18 +17,11 @@
             <label for="firstName" class="form-label">First Name:</label>
             <input type="text" id="firstName" name="firstName" class="form-control" required>
             <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
-            <div class="invalid-feedback">
-                Please provide a first name.
-            </div>
         </div>
-
         <div class="mb-3">
             <label for="lastName" class="form-label">Last Name:</label>
             <input type="text" id="lastName" name="lastName" class="form-control" required>
             <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
-            <div class="invalid-feedback">
-                Please provide a last name.
-            </div>
         </div>
         <label for="flightID" class="form-label">Select a flight ID:</label>
         <select id="flightID" name="flightID" class="form-select">
@@ -36,25 +30,17 @@
         <span th:if="${error}" class="text-danger" th:text="${error}"></span>
         <div class="mb-3">
             <label for="telephone" class="form-label">Telephone:</label>
-            <input type="tel" id="telephone" name="telephone" class="form-control" required>
+            <input type="number" id="telephone" name="telephone" class="form-control" required>
             <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-danger"></span>
-            <div class="invalid-feedback">
-                Please provide a telephone number.
-            </div>
         </div>
-
-
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
 <div class="container mt-3">
     <div class="row justify-content-center">
         <a href="/" class="btn btn-primary">Back to Home Page</a>
     </div>
 </div>
-
-<!-- Bootstrap JS, Popper.js, and jQuery (for Bootstrap functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

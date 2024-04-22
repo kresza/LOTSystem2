@@ -27,7 +27,6 @@ public class Flight {
     @Column(name = "destination")
     private String destination;
 
-//    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$", message = "only YYYY-MM-DD HH:MM:SS format")
     @NotEmpty(message = "cannot be empty")
     @Column(name = "flight_date")
     private String flightDate;
@@ -98,8 +97,6 @@ public class Flight {
     public void setSeats(Integer seats) {
         this.seats = seats;
     }
-
-
 
     @Override
     public String toString() {

@@ -1,0 +1,45 @@
+.table {
+    max-width: 1300px;
+    margin: 0 auto;
+    }
+.btn-small {
+    font-size: 12px;
+    padding: 5px 10px;
+    }
+
+.table-header {
+    border-top: 2px solid #ccc;
+    border-collapse: separate;
+    border-spacing: 0;
+    }
+
+.table-container {
+    max-width: 1150px;
+    margin: 0 auto;
+    }
+
+.navbar-nav .nav-link,
+.btn-primary {
+    color: black;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.btn-primary:hover {
+    color: #007bff;
+    text-shadow: 0 0 10px #007bff;
+}
+
+.btn-primary {
+    background-color: transparent;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 0 10px #007bff;
+}
+
+
