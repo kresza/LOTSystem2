@@ -99,6 +99,16 @@ public class PassengerController {
 
             if (flightID != null) {
                 Optional<Flight> optionalFlight = flightRepository.findById(flightID);
+
+                if(optionalFlight.isPresent())
+                {
+                    Flight flight = optionalFlight.get();
+                    if(flight.getSeats() <= 0){
+                        model.addAttribute("error", "Selected flight is full. Please choose another flight.");
+                        return "/update_passenger";
+                    }
+                }
+
                 if (optionalFlight.isEmpty()) {
                     model.addAttribute("error", "Flight with ID " + flightID + " does not exist");
                     return "/update_passenger";
