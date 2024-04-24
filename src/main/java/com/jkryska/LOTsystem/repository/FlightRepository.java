@@ -10,13 +10,12 @@ import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
-
     // decremental seats
     @Modifying
     @Query("UPDATE Flight f SET f.seats = f.seats - 1 WHERE f.id = :flightId")
     void decrementSeatsByFlightId(@Param("flightId") Long flightId);
-    // incremental seats
 
+    // incremental seats
     @Modifying
     @Query("UPDATE Flight f SET f.seats = f.seats + 1 WHERE f.id = :flightId")
     void incrementSeatsByFlightId(@Param("flightId") Long flightId);
