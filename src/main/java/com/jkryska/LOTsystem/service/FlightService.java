@@ -127,6 +127,8 @@ public class FlightService {
     }
 
     public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats){
+
+
         List<Flight> resultFlights = new ArrayList<>() {};
         for(var flight : flightRepository.findAll()){
             if(id != null && flight.getId() == id) {
@@ -142,6 +144,7 @@ public class FlightService {
                 if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
             }
             else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
+
         }
         return resultFlights;
     }
