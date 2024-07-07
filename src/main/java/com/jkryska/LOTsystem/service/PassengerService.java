@@ -5,6 +5,7 @@ import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,13 +15,11 @@ import java.util.Optional;
 
 @Service
 public class PassengerService {
-    private final PassengerRepository passengerRepository;
-    private final FlightRepository flightRepository;
+    @Autowired
+    private PassengerRepository passengerRepository;
+    @Autowired
+    private FlightRepository flightRepository;
 
-    public PassengerService(PassengerRepository passengerRepository, FlightRepository flightRepository) {
-        this.passengerRepository = passengerRepository;
-        this.flightRepository = flightRepository;
-    }
 
     public List<Passenger> getAllPassengers() {
         return passengerRepository.findAll();
