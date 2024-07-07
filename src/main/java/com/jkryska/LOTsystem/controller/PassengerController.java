@@ -27,7 +27,7 @@ public class PassengerController {
 //    show create passenger form
     @GetMapping("/create_passenger")
     public String createPassenger(Model model){
-        model.addAttribute("flights", flightService.getAllFligts());
+        model.addAttribute("flights", flightService.getAllFlights());
         model.addAttribute("passenger", passengerService.createPassenger());
         return "create_passenger";
     }
@@ -35,7 +35,7 @@ public class PassengerController {
     @PostMapping("/create_passenger")
     public String savePassenger(@ModelAttribute("passenger") @Valid Passenger passenger, BindingResult result, Model model){
         if(result.hasErrors()){
-            model.addAttribute("flights", flightService.getAllFligts());
+            model.addAttribute("flights", flightService.getAllFlights());
             return "/create_passenger";
         }
         return passengerService.savePassenger(passenger, model);
