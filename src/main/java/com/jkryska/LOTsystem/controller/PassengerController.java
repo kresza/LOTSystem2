@@ -24,6 +24,7 @@ public class PassengerController {
         model.addAttribute("passengers", passengerService.getAllPassengers());
         return "/passengers";
     }
+
 //    show create passenger form
     @GetMapping("/create_passenger")
     public String createPassenger(Model model){

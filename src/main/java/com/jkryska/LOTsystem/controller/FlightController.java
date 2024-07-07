@@ -26,12 +26,14 @@ public class FlightController {
         model.addAttribute("flights", flightService.getAllFlights());
         return "flights";
     }
+
 // show create flight page
     @GetMapping("/create_flight")
     public String createFlight(Model model){
         model.addAttribute("flight", new Flight());
         return "create_flight";
     }
+
 // save flight to database
     @PostMapping("/create_flight")
     public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result, Model model){
@@ -40,12 +42,14 @@ public class FlightController {
         }
         return "create_flight";
     }
+
 // show delete flight form
     @GetMapping("/delete_flight")
     public String getDeleteFlight(Model model){
         model.addAttribute("flights", flightService.getAllFlights());
         return "/delete_flight";
     }
+
 // delete from database
     @PostMapping("/delete_flight")
     String deleteFlight(@ModelAttribute("flight")  Flight flight,
@@ -56,15 +60,17 @@ public class FlightController {
         flightService.deleteFlight(id,result,model);
         return "/delete_flight";
     }
+
 //   show update flight
-@GetMapping("/update_flight")
-public String getUpdateFlight(@ModelAttribute Flight flight, Model model){
-    model.addAttribute("flights", flightService.getAllFlights());
-    model.addAttribute("flight", flight);
-    return "update_flight";
-}
+    @GetMapping("/update_flight")
+    public String getUpdateFlight(@ModelAttribute Flight flight, Model model){
+        model.addAttribute("flights", flightService.getAllFlights());
+        model.addAttribute("flight", flight);
+        return "update_flight";
+    }
+
 // update flight in database
-@PostMapping("/update_flight")
+    @PostMapping("/update_flight")
     public String updateFlight(@RequestParam("id")  Long id,
                                @RequestParam(value = "flightNumber", required = false ) String flightNumber,
                                @RequestParam(value = "startingPlace", required = false) String startingPlace,
@@ -95,6 +101,7 @@ public String getUpdateFlight(@ModelAttribute Flight flight, Model model){
         return "flights";
 
     }
+
 // show search flight
     @DateTimeFormat
     @GetMapping("/search_flight")
