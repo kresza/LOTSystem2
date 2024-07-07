@@ -32,7 +32,6 @@ public class PassengerController {
         return "create_passenger";
     }
 //    save passenger in database
-
     @PostMapping("/create_passenger")
     public String savePassenger(@ModelAttribute("passenger") @Valid Passenger passenger, BindingResult result, Model model){
         if(result.hasErrors()){
