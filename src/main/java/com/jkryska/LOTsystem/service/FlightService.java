@@ -41,6 +41,7 @@ public class FlightService {
         return null;
     }
 
+    @Transactional
     public String deleteFlight(Long id, BindingResult result, Model model){
         if (result.hasFieldErrors("id")){
             model.addAttribute("flights", flightRepository.findAll());
@@ -63,6 +64,7 @@ public class FlightService {
         return null;
     }
 
+    @Transactional
     public String updateFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats, Flight flight, BindingResult result, Model model){
         Optional<Flight> optionalFlight = flightRepository.findById(id);
         if (optionalFlight.isPresent()) {
