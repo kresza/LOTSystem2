@@ -1,10 +1,12 @@
 package com.jkryska.LOTsystem.service;
 
+import com.jkryska.LOTsystem.Exceptions.AppException;
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,7 +57,6 @@ public class FlightService {
             return "/delete_flight";
         }
 
-
         for (var passenger : passengerRepository.findAll()){
             if(passenger.getFlightID().equals(id)) passengerRepository.deleteById(passenger.getId());
         }
@@ -65,7 +66,7 @@ public class FlightService {
     }
 
     @Transactional
-    public String updateFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats, Flight flight, BindingResult result, Model model){
+    public void updateFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats, Flight flight, BindingResult result, Model model){
         Optional<Flight> optionalFlight = flightRepository.findById(id);
         if (optionalFlight.isPresent()) {
             Flight actualFlight = optionalFlight.get();
@@ -73,14 +74,14 @@ public class FlightService {
             if (flightNumber != null && !flightNumber.isEmpty()) {
                 if (result.hasFieldErrors("flightNumber")) {
                     model.addAttribute("flights", flightRepository.findAll());
-                    return "/update_flight";
+                    throw new AppException("invalid Flight Number", HttpStatus.BAD_REQUEST);
                 }
                 List<Flight> flights = flightRepository.findAll();
                 for(var localFlight : flights){
                     if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
                         model.addAttribute("flights", flights);
                         model.addAttribute("error", "Flight Number already exist");
-                        return "/update_flight";
+                        throw new AppException("Flight Number already exist", HttpStatus.BAD_REQUEST);
                     }
                 }
                 actualFlight.setFlightNumber(flightNumber);
@@ -88,36 +89,33 @@ public class FlightService {
             if (startingPlace != null && !startingPlace.isEmpty()) {
                 if (result.hasFieldErrors("startingPlace")) {
                     model.addAttribute("flights", flightRepository.findAll());
-                    return "/update_flight";
+                    throw new AppException("invalid starting place", HttpStatus.BAD_REQUEST);
                 }
                 actualFlight.setStartingPlace(startingPlace);
             }
             if (destination != null && !destination.isEmpty()) {
                 if (result.hasFieldErrors("destination")) {
                     model.addAttribute("flights", flightRepository.findAll());
-                    return "/update_flight";
+                    throw new AppException("invalid destination", HttpStatus.BAD_REQUEST);
                 }
                 actualFlight.setDestination(destination);
             }
             if (flightDate != null && !flightDate.isEmpty()) {
                 if (result.hasFieldErrors("flightDate")) {
                     model.addAttribute("flights", flightRepository.findAll());
-                    return "/update_flight";
+                    throw new AppException("invalid flight date", HttpStatus.BAD_REQUEST);
                 }
                 actualFlight.setFlightDate(flightDate);
             }
             if (seats != null) {
                 if (result.hasFieldErrors("seats")) {
                     model.addAttribute("flights", flightRepository.findAll());
-                    return "/update_flight";
+                    throw new AppException("invalid seats", HttpStatus.BAD_REQUEST);
                 }
                 actualFlight.setSeats(seats);
             }
-
             flightRepository.save(actualFlight);
-
         }
-        return null;
     }
     public List<Flight> sortFlightsByASC(String param){
         return flightRepository.sortFlightsByASC(param);

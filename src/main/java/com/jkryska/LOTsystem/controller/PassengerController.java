@@ -22,7 +22,7 @@ public class PassengerController {
     @GetMapping("/passengers")
     public String allPassengers(Model model){
         model.addAttribute("passengers", passengerService.getAllPassengers());
-        return "/passengers";
+        return "/passengers"; //tu zmienione zeby nie wchodzilo w petle, trzeba pozmieniac wsztstko
     }
 
 //    show create passenger form

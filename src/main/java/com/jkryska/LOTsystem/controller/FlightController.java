@@ -1,5 +1,6 @@
 package com.jkryska.LOTsystem.controller;
 
+import com.jkryska.LOTsystem.Exceptions.AppException;
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.service.FlightService;
 import jakarta.validation.Valid;
@@ -79,14 +80,18 @@ public class FlightController {
                                @RequestParam(value = "destination", required = false) String destination,
                                @RequestParam(value = "flightDate", required = false) String flightDate,
                                @RequestParam(value = "seats", required = false) Integer seats,
-                               @ModelAttribute("flight") @Valid Flight flight,
+                               @Valid Flight flight,
                                BindingResult result,
                                Model model) {
 
-        if(flightService.updateFlight(id, flightNumber,startingPlace,destination,flightDate,seats,flight,result,model) == null){
-            return "redirect:/flights";
+        try{
+            flightService.updateFlight(id, flightNumber,startingPlace,destination,flightDate,seats,flight,result,model);
         }
-        return "update_flight";
+        catch (AppException ex){
+            return "/update_flight";
+        }
+        return "redirect:/flights";
+
     }
 
 //    sort ASC flights

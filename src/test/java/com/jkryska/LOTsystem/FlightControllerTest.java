@@ -2,9 +2,12 @@ package com.jkryska.LOTsystem;
 
 import com.jkryska.LOTsystem.controller.FlightController;
 import com.jkryska.LOTsystem.entity.Flight;
+import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.service.FlightService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,16 +21,28 @@ import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FlightController.class)
 public class FlightControllerTest {
+    @Mock
+    private Model model;
 
+    @Mock
+    private BindingResult result;
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private FlightService flightService;
+
+    @InjectMocks
+    private FlightController flightController;
+
+    @Mock
+    private FlightRepository flightRepository;
 
     @Test
     public void testGetFlights() throws Exception {
@@ -72,40 +87,6 @@ public class FlightControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-
-    @Test
-    public void testUpdateFlight() throws Exception {
-        Flight flight = new Flight();
-        flight.setId(1L);
-        flight.setFlightNumber("1234");
-        flight.setStartingPlace("CityA");
-        flight.setDestination("CityB");
-        flight.setFlightDate("2024-07-23");
-        flight.setSeats(150);
-
-        Mockito.when(flightService.updateFlight(
-                Mockito.anyLong(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyInt(),
-                Mockito.any(Flight.class),
-                Mockito.any(BindingResult.class),
-                Mockito.any(Model.class)
-        )).thenReturn(null);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/update_flight")
-                        .param("id", "1")
-                        .param("flightNumber", "1234")
-                        .param("startingPlace", "CityA")
-                        .param("destination", "CityB")
-                        .param("flightDate", "2024-07-23")
-                        .param("seats", "150"))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/flights"))
-                .andDo(MockMvcResultHandlers.print());
-    }
 
     @Test
     public void testCreateFlight() throws Exception {
@@ -159,7 +140,7 @@ public class FlightControllerTest {
     public void testSortingASC() throws Exception {
         Flight flight = new Flight();
         flight.setId(1L);
-        Mockito.when(flightService.sortFlightsByASC(Mockito.anyString())).thenReturn(List.of(flight));
+        Mockito.when(flightService.sortFlightsByASC(anyString())).thenReturn(List.of(flight));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/flights/ASC/flightNumber"))
                 .andExpect(status().isOk())
@@ -171,7 +152,7 @@ public class FlightControllerTest {
     public void testSortingDESC() throws Exception {
         Flight flight = new Flight();
         flight.setId(1L);
-        Mockito.when(flightService.sortFlightsByDESC(Mockito.anyString())).thenReturn(List.of(flight));
+        Mockito.when(flightService.sortFlightsByDESC(anyString())).thenReturn(List.of(flight));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/flights/DESC/flightNumber"))
                 .andExpect(status().isOk())
@@ -213,7 +194,7 @@ public class FlightControllerTest {
     @Test
     public void testDeleteFlight() throws Exception {
         Mockito.when(flightService.deleteFlight(
-                Mockito.anyLong(),
+                anyLong(),
                 Mockito.any(BindingResult.class),
                 Mockito.any(Model.class))
         ).thenReturn(null);

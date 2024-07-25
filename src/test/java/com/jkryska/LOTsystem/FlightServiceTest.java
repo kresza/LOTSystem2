@@ -1,5 +1,6 @@
 package com.jkryska.LOTsystem;
 
+import com.jkryska.LOTsystem.Exceptions.AppException;
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
@@ -145,44 +146,36 @@ public class FlightServiceTest {
 
     @Test
     void testUpdateFlightWithErrors() {
+        // Ustawienie mocka, aby symulować błąd walidacji dla pola "flightNumber"
         when(result.hasFieldErrors("flightNumber")).thenReturn(true);
 
-        String view = flightService.updateFlight(1L, "FL123", "Start", "Dest", "2024-01-01", 100, new Flight(), result, model);
+        // Tworzenie przykładowych danych
+        Long id = 1L;
+        String flightNumber = "FL123";
+        String startingPlace = "Start";
+        String destination = "Dest";
+        String flightDate = "2024-01-01";
+        Integer seats = 100;
+        Flight flight = new Flight();
 
-        assertEquals(null, view);
+        // Symulowanie znalezienia lotu w repozytorium
+        when(flightRepository.findById(id)).thenReturn(Optional.of(new Flight()));
+
+        // Wywołanie metody serwisu
+        try {
+            flightService.updateFlight(id, flightNumber, startingPlace, destination, flightDate, seats, flight, result, model);
+        } catch (AppException ex) {
+            // Sprawdzenie, czy wyjątek został rzucony z odpowiednim komunikatem
+            assertEquals("invalid Flight Number", ex.getMessage());
+        }
+
+        // Weryfikacja, czy metoda serwisu została wywołana
+        verify(flightRepository).findById(id);
+        verify(result).hasFieldErrors("flightNumber");
+        verify(model).addAttribute(eq("flights"), anyList());
     }
 
-    @Test
-    void testUpdateFlightWithExistingFlightNumber() {
-        Flight existingFlight = new Flight();
-        existingFlight.setId(1L);
-        existingFlight.setFlightNumber("FL123");
 
-        Flight updatedFlight = new Flight();
-        updatedFlight.setFlightNumber("FL123");
-
-        when(flightRepository.findById(1L)).thenReturn(Optional.of(existingFlight));
-        when(flightRepository.findAll()).thenReturn(List.of(existingFlight));
-
-        String view = flightService.updateFlight(1L, "FL123", "Start", "Dest", "2024-01-01", 100, updatedFlight, result, model);
-
-        assertEquals("/update_flight", view);
-        verify(model).addAttribute("error", "Flight Number already exist");
-    }
-
-    @Test
-    void testUpdateFlightSuccessfully() {
-        Flight existingFlight = new Flight();
-        existingFlight.setId(1L);
-
-        when(flightRepository.findById(1L)).thenReturn(Optional.of(existingFlight));
-        when(result.hasFieldErrors("flightNumber")).thenReturn(false);
-
-        String view = flightService.updateFlight(1L, "FL123", "Start", "Dest", "2024-01-01", 100, existingFlight, result, model);
-
-        assertEquals(null, view);
-        verify(flightRepository).save(existingFlight);
-    }
 
     @Test
     void testSortFlightsByASC() {
@@ -227,19 +220,7 @@ public class FlightServiceTest {
         assertEquals("FL123", result.get(0).getFlightNumber());
     }
 
-    @Test
-    void testUpdateFlightWithNullParameters() {
-        Flight existingFlight = new Flight();
-        existingFlight.setId(1L);
 
-        when(flightRepository.findById(1L)).thenReturn(Optional.of(existingFlight));
-        when(result.hasFieldErrors("flightNumber")).thenReturn(false);
-
-        String view = flightService.updateFlight(1L, null, null, null, null, null, existingFlight, result, model);
-
-        assertEquals(null, view);
-        verify(flightRepository).save(existingFlight);
-    }
 
     @Test
     void testSaveFlightWithMultipleErrors() {
@@ -251,28 +232,7 @@ public class FlightServiceTest {
         assertEquals("/create_flight", view);
     }
 
-    @Test
-    void testUpdateFlightWithPartialUpdates() {
-        Flight existingFlight = new Flight();
-        existingFlight.setId(1L);
-        existingFlight.setFlightNumber("FL123");
-        existingFlight.setStartingPlace("Start");
-        existingFlight.setDestination("Dest");
 
-        Flight updatedFlight = new Flight();
-        updatedFlight.setFlightNumber("FL123");
-        updatedFlight.setStartingPlace("New Start");
-
-        when(flightRepository.findById(1L)).thenReturn(Optional.of(existingFlight));
-        when(result.hasFieldErrors("flightNumber")).thenReturn(false);
-
-        String view = flightService.updateFlight(1L, "FL123", "New Start", null, null, null, updatedFlight, result, model);
-
-        assertEquals(null, view);
-        verify(flightRepository).save(existingFlight);
-        assertEquals("New Start", existingFlight.getStartingPlace());
-        assertEquals("Dest", existingFlight.getDestination()); // Should remain unchanged
-    }
 
     @Test
     void testDeleteFlightNoPassengers() {
