@@ -14,36 +14,6 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="row border p-5 bg-light justify-content-center">
-                <!--                FLIGHT LIST CARD-->
-                <div class="card text-white bg-primary mb-3" style="max-width: 15rem;">
-                    <div class="card-header">Fly Management System</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Flight List</h5>
-                        <p class="card-text">
-                            View all flights sortable by flight number, departure point, arrival point, date and
-                            available seats.
-                        </p>
-                    </div>
-                    <div class="col text-center mt-auto">
-                        <button type="button" class="btn bg-white" onclick="window.location.href='/flights'">Flights
-                        </button>
-                    </div>
-                </div>
-                <!--                UPDATE FLIGHT CARD-->
-                <div class="card text-white bg-primary mb-3 ms-2" style="max-width: 15rem;">
-                    <div class="card-header">Fly Management System</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Update Flight</h5>
-                        <p class="card-text">
-                            Update flights by flight number, departure point, arrival point, date and available seats.
-                        </p>
-                    </div>
-                    <div class="col text-center mt-auto">
-                        <button type="button" class="btn bg-white" onclick="window.location.href='/update_flight'">
-                            Update
-                        </button>
-                    </div>
-                </div>
                 <!--                CREATE FLIGHT CARD-->
                 <div class="card text-white bg-primary mb-3 ms-2" style="max-width: 15rem;">
                     <div class="card-header">Fly Management System</div>
@@ -60,20 +30,20 @@
                         </button>
                     </div>
                 </div>
-                <!--                REMOVE FLIGHT CARD-->
-                <div class="card text-white bg-primary mb-3 ms-2" style="max-width: 15rem;">
+                <!--                FLIGHT LIST CARD-->
+                <div class="card text-white bg-primary mb-3" style="max-width: 50rem; margin: 1rem; padding: 1rem;">
                     <div class="card-header">Fly Management System</div>
                     <div class="card-body">
-                        <h5 class="card-title">Remove Flight</h5>
+                        <h5 class="card-title">Manage FLights</h5>
                         <p class="card-text">
-                            Remove unnecessary flight.
+                            View all flights sortable by flight number, departure point, arrival point, date and
+                            available seats. Create passengers and add them to the flight. If you add them, the number of seats on the
+                            flight will decrease. Update flights by flight number, departure point, arrival point, date and available seats. Or remove unnecessary flights.
                             Remember that deleting a flight removes all passengers belonging to that flight.
                         </p>
                     </div>
                     <div class="col text-center mt-auto">
-                        <button type="button" class="btn bg-white" onclick="window.location.href='/delete_flight'">
-                            Remove
-                        </button>
+                        <button type="button" class="btn btn-light btn-lg" onclick="window.location.href='/flights'">Flights</button>
                     </div>
                 </div>
                 <!--                SEARCH FLIGHT CARD-->

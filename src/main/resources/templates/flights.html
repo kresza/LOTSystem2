@@ -67,6 +67,7 @@
         <td>
             <a th:href="@{'/update_flight/' + ${flight.id}}" class="btn btn-success btn-small">Edit</a>
         </td>
+        <td><a th:href="@{'/create_passenger/' + ${flight.id}}" class="btn btn-custom btn-sm">Add Passenger</a></td>
         <td>
             <form th:action="@{'/flights/' + ${flight.id}}" method="post">
                 <button type="submit" class="btn btn-danger btn-small">Delete</button>

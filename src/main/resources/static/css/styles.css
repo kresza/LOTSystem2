@@ -41,6 +41,33 @@
     border-color: #007bff;
     box-shadow: 0 0 10px #007bff;
 }
+.btn-custom {
+    background-color: #007bff; /* Blue color */
+    color: white; /* White text color */
+    border-color: #007bff; /* Blue border color */
+    font-size: 0.6rem; /* Even smaller text size */
+    padding: 2px 6px; /* Reduced padding */
+    border-radius: 2px; /* Smaller rounded corners */
+}
+
+.btn-custom:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #004085; /* Darker border color on hover */
+}
+
+.btn-custom:focus, .btn-custom.focus {
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Blue shadow on focus */
+}
+
+.btn-group .btn {
+    margin-right: 2px; /* Reduced space between buttons */
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0; /* No margin for the last button */
+}
+
+
 
 
 

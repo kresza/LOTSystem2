@@ -31,6 +31,12 @@ public class PassengerService {
         return new Passenger();
     }
 
+    public Passenger createPassengerWithFlightDetails(Flight flight) {
+        Passenger passenger = createPassenger(); // Assuming createPassenger initializes a new Passenger
+        passenger.setFlightID(flight.getId());
+        return passenger;
+    }
+
     public Passenger getPassenger(Long id) {
         Optional<Passenger> passengerOpt = passengerRepository.findById(id);
         if (passengerOpt.isPresent()) {

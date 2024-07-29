@@ -1,6 +1,7 @@
 package com.jkryska.LOTsystem.controller;
 
 import com.jkryska.LOTsystem.Exceptions.AppException;
+import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.service.FlightService;
 import com.jkryska.LOTsystem.service.PassengerService;
@@ -26,37 +27,26 @@ public class PassengerController {
         return "/passengers"; //tu zmienione ba getpassanger zeby nie wchodzilo w petle, trzeba pozmieniac wsztstko
     }
 
-    //    show create passenger form
-    @GetMapping("/create_passenger")
-    public String createPassenger(Model model) {
-        model.addAttribute("flights", flightService.getAllFlights());
-        model.addAttribute("passenger", passengerService.createPassenger());
+    @GetMapping("/create_passenger/{id}")
+    public String createPassenger(@PathVariable Long id, Model model) {
+        // Fetch the flight details using the provided ID
+        Flight flight = flightService.getflight(id);
+
+        // Create a new Passenger object with flight details
+        Passenger passenger = passengerService.createPassengerWithFlightDetails(flight);
+
+        // Add the Passenger object and Flight information to the model
+        model.addAttribute("passenger", passenger);
+        model.addAttribute("flight", flight);
         return "create_passenger";
     }
 
-    //    save passenger in database
-    @PostMapping("/create_passenger")
-    public String savePassenger(@ModelAttribute("passenger") @Valid Passenger passenger, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("flights", flightService.getAllFlights());
-            return "/create_passenger";
-        }
-        return passengerService.savePassenger(passenger, model);
-    }
 
     //    delete passenger
     @PostMapping(value = "/passengers/{id}")
     String deletePassenger(@PathVariable Long id) {
         passengerService.deletePassenger(id);
         return "redirect:/passengers";
-    }
-
-    //    show update passenger form
-    @GetMapping("/update_passenger")
-    public String getUpdatePassenger(@ModelAttribute Passenger passenger, Model model) {
-        model.addAttribute("passengers", passengerService.getAllPassengers());
-        model.addAttribute("passenger", passenger);
-        return "update_passenger";
     }
 
     @GetMapping("/update_passenger/{id}")
