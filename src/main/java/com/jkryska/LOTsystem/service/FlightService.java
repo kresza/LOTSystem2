@@ -28,6 +28,17 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
+    public Flight getflight(Long id){
+        Optional<Flight> flight = flightRepository.findById(id);
+        if(flight.isPresent())
+        {
+            return flight.get();
+        }
+        else {
+            throw new AppException("Flight with this ID does not exist", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Transactional
     public void saveFlight(Flight flight, Model model, BindingResult result){
         if(result.hasErrors()){
@@ -75,11 +86,11 @@ public class FlightService {
                     throw new AppException("invalid Flight Number", HttpStatus.BAD_REQUEST);
                 }
                 List<Flight> flights = flightRepository.findAll();
-                for(var localFlight : flights){
-                    if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
+                for (var localFlight : flights) {
+                    if (!(localFlight.getId() == id) && Objects.equals(localFlight.getFlightNumber(), flightNumber)) {
                         model.addAttribute("flights", flights);
-                        model.addAttribute("error", "Flight Number already exist");
-                        throw new AppException("Flight Number already exist", HttpStatus.BAD_REQUEST);
+                        model.addAttribute("error", "Flight Number already exists");
+                        throw new AppException("Flight Number already exists", HttpStatus.BAD_REQUEST);
                     }
                 }
                 actualFlight.setFlightNumber(flightNumber);

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -65,17 +66,19 @@ public class FlightController {
         return "/flights";
     }
 
-//   show update flight
-    @GetMapping("/update_flight")
-    public String getUpdateFlight(@ModelAttribute Flight flight, Model model){
-        model.addAttribute("flights", flightService.getAllFlights());
-        model.addAttribute("flight", flight);
-        return "update_flight";
+    @GetMapping("/update_flight/{id}")
+    public String getUpdateFlight(@PathVariable Long id, Model model) {
+        try {
+            Flight flight = flightService.getflight(id);
+            model.addAttribute("flight", flight);
+            return "update_flight";
+        } catch (AppException e) {
+            model.addAttribute("iderror", "Failed to update the flight");
+            return "update_flight";
+        }
     }
-
-// update flight in database
-    @PostMapping("/update_flight")
-    public String updateFlight(@RequestParam("id")  Long id,
+    @PostMapping("/update_flight/{id}")
+    public String updateFlight(@PathVariable("id")  Long id,
                                @RequestParam(value = "flightNumber", required = false ) String flightNumber,
                                @RequestParam(value = "startingPlace", required = false) String startingPlace,
                                @RequestParam(value = "destination", required = false) String destination,
@@ -83,16 +86,18 @@ public class FlightController {
                                @RequestParam(value = "seats", required = false) Integer seats,
                                @Valid Flight flight,
                                BindingResult result,
-                               Model model) {
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
 
         try{
             flightService.updateFlight(id, flightNumber,startingPlace,destination,flightDate,seats,flight,result,model);
+            redirectAttributes.addFlashAttribute("success", "Flight successfully updated");
+            return "redirect:/flights";
         }
-        catch (AppException ex){
+        catch (AppException e){
+            model.addAttribute("errorpost", "Failed to update the flight");
             return "/update_flight";
         }
-        return "redirect:/flights";
-
     }
 
 //    sort ASC flights
