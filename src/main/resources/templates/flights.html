@@ -13,6 +13,12 @@
 <div th:replace="~{navbar}"></div>
 <div class="container-fluid text-center">
     <h1 class="mt-5">Flights</h1>
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
 </div>
 <table class="table table-header" id="table-container">
     <thead class="thead-light">
@@ -58,7 +64,11 @@
         <td th:text="${flight.destination}">Destination</td>
         <td th:text="${flight.flightDate}">Flight Date</td>
         <td th:text="${flight.seats}">Seats</td>
-
+        <td>
+            <form th:action="@{'/flights/' + ${flight.id}}" method="post">
+                <button type="submit" class="btn btn-danger btn-small">Delete</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

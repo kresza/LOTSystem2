@@ -4,7 +4,6 @@ import com.jkryska.LOTsystem.Exceptions.AppException;
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.service.FlightService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Digits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -48,28 +47,22 @@ public class FlightController {
         }
     }
 
-// show delete flight form
-    @GetMapping("/delete_flight")
-    public String getDeleteFlight(Model model){
-        model.addAttribute("flights", flightService.getAllFlights());
-        return "/delete_flight";
-    }
-
-// delete from database
-    @PostMapping("/delete_flight")
-    String deleteFlight(@ModelAttribute("flight")  Flight flight,
-                        BindingResult result,
-                        @RequestParam("id") @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Id must be a number") Long id,
-                        Model model){
-
-
+    @PostMapping("/flights/{id}")
+    String deleteFlight(@PathVariable Long id,Model model) {
         try{
-            flightService.deleteFlight(id,result,model);
+            flightService.deleteFlight(id, model);
             model.addAttribute("success", "Flight successful deleted");
         }catch (AppException e){
-            return "/delete_flight";
+            model.addAttribute("error", "invalid id");
+            return "/flights";
         }
-        return "/delete_flight";
+        return "/flights";
+    }
+    @GetMapping("/flights/{id}")
+    public String handleGetRequest(@PathVariable Long id, Model model) {
+        model.addAttribute("error", "invalid id");
+        model.addAttribute("flights", flightService.getAllFlights());
+        return "/flights";
     }
 
 //   show update flight

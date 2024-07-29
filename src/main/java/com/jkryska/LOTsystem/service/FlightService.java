@@ -43,11 +43,11 @@ public class FlightService {
     }
 
     @Transactional
-    public void deleteFlight(Long id, BindingResult result, Model model){
-        if (result.hasFieldErrors("id")){
-            model.addAttribute("flights", flightRepository.findAll());
-            throw new AppException("invalid id", HttpStatus.BAD_REQUEST);
-        }
+    public void deleteFlight(Long id, Model model){
+//        if (result.hasFieldErrors("id")){
+//            model.addAttribute("flights", flightRepository.findAll());
+//            throw new AppException("invalid id", HttpStatus.BAD_REQUEST);
+//        }
 
         Optional<Flight> optionalFlight = flightRepository.findById(id);
         if (optionalFlight.isEmpty()) {
