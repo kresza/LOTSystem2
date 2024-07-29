@@ -1,11 +1,13 @@
 package com.jkryska.LOTsystem.service;
 
+import com.jkryska.LOTsystem.Exceptions.AppException;
 import com.jkryska.LOTsystem.entity.Flight;
 import com.jkryska.LOTsystem.entity.Passenger;
 import com.jkryska.LOTsystem.repository.FlightRepository;
 import com.jkryska.LOTsystem.repository.PassengerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,14 @@ public class PassengerService {
 
     public Passenger createPassenger() {
         return new Passenger();
+    }
+
+    public Passenger getPassenger(Long id) {
+        Optional<Passenger> passengerOpt = passengerRepository.findById(id);
+        if (passengerOpt.isPresent()) {
+            return passengerOpt.get();
+        }
+        throw new AppException("Passenger does not exist", HttpStatus.BAD_REQUEST);
     }
 
     @Transactional
@@ -60,9 +70,7 @@ public class PassengerService {
 
 
     @Transactional
-    public String updatePassenger(Long id, Long flightID, String firstName, String lastName, String telephone,Passenger passenger, BindingResult result, Model model) {
-
-
+    public String updatePassenger(Long id, Long flightID, String firstName, String lastName, String telephone, Passenger passenger, BindingResult result, Model model) {
         Optional<Passenger> optionalPassenger = passengerRepository.findById(id);
         if (optionalPassenger.isPresent()) {
             Passenger actualPassenger = optionalPassenger.get();
@@ -74,12 +82,11 @@ public class PassengerService {
                     Flight flight = optionalFlight.get();
                     if (flight.getSeats() <= 0) {
                         model.addAttribute("error", "Selected flight is full. Please choose another flight.");
-                        return "update_passenger";
+                        return "edit_passenger";
                     }
-                }
-                if (optionalFlight.isEmpty()) {
+                } else {
                     model.addAttribute("error", "Flight with ID " + flightID + " does not exist");
-                    return "update_passenger";
+                    return "edit_passenger";
                 }
                 flightRepository.decrementSeatsByFlightId(flightID);
                 flightRepository.incrementSeatsByFlightId(actualPassenger.getFlightID());
@@ -88,24 +95,27 @@ public class PassengerService {
             if (firstName != null && !firstName.isEmpty()) {
                 if (result.hasFieldErrors("firstName")) {
                     model.addAttribute("firstNameErrors", result);
-                    return "update_passenger";
+                    return "edit_passenger";
                 }
                 actualPassenger.setFirstName(firstName);
             }
             if (lastName != null && !lastName.isEmpty()) {
                 if (result.hasFieldErrors("lastName")) {
-                    return "update_passenger";
+                    return "edit_passenger";
                 }
                 actualPassenger.setLastName(lastName);
             }
             if (telephone != null && !telephone.isEmpty()) {
                 if (result.hasFieldErrors("telephone")) {
-                    return "update_passenger";
+                    return "edit_passenger";
                 }
                 actualPassenger.setTelephone(telephone);
             }
 
             passengerRepository.save(actualPassenger);
+        } else {
+            model.addAttribute("error", "Passenger not found");
+            return "edit_passenger";
         }
         return null;
     }

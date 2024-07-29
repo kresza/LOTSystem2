@@ -33,6 +33,9 @@
         <td th:text="${passenger.lastName}">Destination</td>
         <td th:text="${passenger.telephone}">Flight Date</td>
         <td>
+            <a th:href="@{'/update_passenger/' + ${passenger.id}}" class="btn btn-success btn-small">Edit</a>
+        </td>
+        <td>
             <form th:action="@{'/passengers/' + ${passenger.id}}" method="post" >
                 <button type="submit" class="btn btn-danger btn-small" >Delete</button>
             </form>

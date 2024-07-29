@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
@@ -29,32 +29,31 @@ public class FlightService {
     }
 
     @Transactional
-    public String saveFlight(Flight flight, Model model, BindingResult result){
+    public void saveFlight(Flight flight, Model model, BindingResult result){
         if(result.hasErrors()){
-            return "/create_flight";
+            throw new AppException("invalid data", HttpStatus.BAD_REQUEST);
         }
         for(var localFlight : flightRepository.findAll()){
             if(Objects.equals(localFlight.getFlightNumber(), flight.getFlightNumber())){
                 model.addAttribute("error", "Flight Number already exist");
-                return "/create_flight";
+                throw new AppException("Flight Number already exist", HttpStatus.BAD_REQUEST);
             }
         }
         flightRepository.save(flight);
-        return null;
     }
 
     @Transactional
-    public String deleteFlight(Long id, BindingResult result, Model model){
+    public void deleteFlight(Long id, BindingResult result, Model model){
         if (result.hasFieldErrors("id")){
             model.addAttribute("flights", flightRepository.findAll());
-            return "/delete_flight";
+            throw new AppException("invalid id", HttpStatus.BAD_REQUEST);
         }
 
         Optional<Flight> optionalFlight = flightRepository.findById(id);
         if (optionalFlight.isEmpty()) {
             model.addAttribute("error", "Flight with ID " + id + " does not exist");
             model.addAttribute("flights", flightRepository.findAll());
-            return "/delete_flight";
+            throw new AppException("Flight with this ID does not exist", HttpStatus.BAD_REQUEST);
         }
 
         for (var passenger : passengerRepository.findAll()){
@@ -62,7 +61,6 @@ public class FlightService {
         }
         flightRepository.deleteById(id);
         model.addAttribute("flights", flightRepository.findAll());
-        return null;
     }
 
     @Transactional
@@ -124,27 +122,37 @@ public class FlightService {
         return flightRepository.sortFlightsByDESC(param);
     }
 
-    public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats){
-
-
-        List<Flight> resultFlights = new ArrayList<>() {};
-        for(var flight : flightRepository.findAll()){
-            if(id != null && flight.getId() == id) {
-                resultFlights.add(flight);
-            }
-            else if(flightNumber != null && !flightNumber.isEmpty() && flight.getFlightNumber().equals(flightNumber)) resultFlights.add(flight);
-            else if(startingPlace != null && !startingPlace.isEmpty() && flight.getStartingPlace().equals(startingPlace)) resultFlights.add(flight);
-            else if(destination != null &&!destination.isEmpty() && flight.getDestination().equals(destination)) resultFlights.add(flight);
-            else if(flightDate != null &&!flightDate.isEmpty()) {
-                StringBuilder stringBuilder = new StringBuilder(flight.getFlightDate());
-                StringBuilder stringBuilder2 = new StringBuilder(flightDate);
-                stringBuilder.delete(10, 19);
-                if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
-            }
-            else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
-
-        }
-        return resultFlights;
-    }
+//    public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats){
+//
+//
+//        List<Flight> resultFlights = new ArrayList<>() {};
+//        for(var flight : flightRepository.findAll()){
+//            if(id != null && flight.getId() == id) {
+//                resultFlights.add(flight);
+//            }
+//            else if(flightNumber != null && !flightNumber.isEmpty() && flight.getFlightNumber().equals(flightNumber)) resultFlights.add(flight);
+//            else if(startingPlace != null && !startingPlace.isEmpty() && flight.getStartingPlace().equals(startingPlace)) resultFlights.add(flight);
+//            else if(destination != null &&!destination.isEmpty() && flight.getDestination().equals(destination)) resultFlights.add(flight);
+//            else if(flightDate != null &&!flightDate.isEmpty()) {
+//                StringBuilder stringBuilder = new StringBuilder(flight.getFlightDate());
+//                StringBuilder stringBuilder2 = new StringBuilder(flightDate);
+//                stringBuilder.delete(10, 19);
+//                if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
+//            }
+//            else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
+//
+//        }
+//        return resultFlights;
+//    }
+public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats) {
+    return flightRepository.findAll().stream()
+            .filter(flight -> id == null || Objects.equals(flight.getId(), id))
+            .filter(flight -> flightNumber == null || flightNumber.isEmpty() || flight.getFlightNumber().equals(flightNumber))
+            .filter(flight -> startingPlace == null || startingPlace.isEmpty() || flight.getStartingPlace().equals(startingPlace))
+            .filter(flight -> destination == null || destination.isEmpty() || flight.getDestination().equals(destination))
+            .filter(flight -> flightDate == null || flightDate.isEmpty() || flight.getFlightDate().substring(0, 10).equals(flightDate))
+            .filter(flight -> seats == null || Objects.equals(flight.getSeats(), seats))
+            .collect(Collectors.toList());
+}
 
 }

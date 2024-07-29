@@ -40,10 +40,12 @@ public class FlightController {
 // save flight to database
     @PostMapping("/create_flight")
     public String saveFlight(@ModelAttribute("flight") @Valid Flight flight, BindingResult result, Model model){
-        if(flightService.saveFlight(flight, model,result) == null){
+        try{
+            flightService.saveFlight(flight, model,result);
             return "redirect:/flights";
+        }catch (AppException e){
+            return "create_flight";
         }
-        return "create_flight";
     }
 
 // show delete flight form
@@ -60,7 +62,13 @@ public class FlightController {
                         @RequestParam("id") @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Id must be a number") Long id,
                         Model model){
 
-        flightService.deleteFlight(id,result,model);
+
+        try{
+            flightService.deleteFlight(id,result,model);
+            model.addAttribute("success", "Flight successful deleted");
+        }catch (AppException e){
+            return "/delete_flight";
+        }
         return "/delete_flight";
     }
 
