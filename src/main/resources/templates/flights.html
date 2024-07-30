@@ -8,11 +8,13 @@
     <script src="" th:src="@{js/script.js}"></script>
     <link rel="icon" type="image/x-icon" href="https://cdn.worldvectorlogo.com/logos/lot-2.svg">
     <link rel="stylesheet" href="" th:href="@{/css/styles.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styleshome.css}">
 </head>
 <body>
-<div th:replace="~{navbar}"></div>
-<div class="container-fluid text-center">
-    <h1 class="mt-5">Flights</h1>
+<div th:replace="~{header}"></div>
+<div class="container-fluid text-center main-content">
+    <h1>Manage Flights</h1>
     <div th:if="${success}" class="alert alert-success" role="alert">
         <span th:text="${success}"></span>
     </div>
@@ -20,39 +22,44 @@
         <span th:text="${error}"></span>
     </div>
 </div>
-<table class="table table-header" id="table-container">
+<table class="table" id="table-container">
     <thead class="thead-light">
     <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Flight Number
+        <th scope="col"><p>ID</p></th>
+        <th scope="col">
             <select data-column="flightNumber" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
+            <p>Flight Number</p>
         </th>
-        <th scope="col">Starting Place
+        <th scope="col">
             <select data-column="startingPlace" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
+            <p>Starting Place</p>
         </th>
-        <th scope="col">Destination
+        <th scope="col">
             <select data-column="destination" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
+            <p>Destination</p>
         </th>
-        <th scope="col">Flight Date
+        <th scope="col">
             <select data-column="flightDate" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
+            <p>Flight Date</p>
         </th>
-        <th scope="col">Seats
+        <th scope="col">
             <select data-column="seats" onchange="sortFlights(this)">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
+            <p>Seats</p>
         </th>
     </tr>
     </thead>

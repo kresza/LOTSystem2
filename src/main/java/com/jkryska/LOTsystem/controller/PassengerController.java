@@ -29,16 +29,29 @@ public class PassengerController {
 
     @GetMapping("/create_passenger/{id}")
     public String createPassenger(@PathVariable Long id, Model model) {
-        // Fetch the flight details using the provided ID
         Flight flight = flightService.getflight(id);
 
-        // Create a new Passenger object with flight details
         Passenger passenger = passengerService.createPassengerWithFlightDetails(flight);
 
-        // Add the Passenger object and Flight information to the model
         model.addAttribute("passenger", passenger);
         model.addAttribute("flight", flight);
         return "create_passenger";
+    }
+    @PostMapping("/create_passenger/{id}")
+    public String savePassenger(@PathVariable Long id,
+                                @ModelAttribute @Valid Passenger passenger,
+                                BindingResult result,
+                                Model model) {
+
+        Flight flight = flightService.getflight(id);
+        passenger.setFlightID(flight.getId());
+
+        try {
+            passengerService.savePassenger(passenger, model, result, flight);
+            return "redirect:/flights";
+        } catch (AppException e) {
+            return "create_passenger";
+        }
     }
 
 

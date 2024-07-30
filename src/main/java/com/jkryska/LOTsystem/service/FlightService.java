@@ -55,10 +55,6 @@ public class FlightService {
 
     @Transactional
     public void deleteFlight(Long id, Model model){
-//        if (result.hasFieldErrors("id")){
-//            model.addAttribute("flights", flightRepository.findAll());
-//            throw new AppException("invalid id", HttpStatus.BAD_REQUEST);
-//        }
 
         Optional<Flight> optionalFlight = flightRepository.findById(id);
         if (optionalFlight.isEmpty()) {
@@ -133,28 +129,6 @@ public class FlightService {
         return flightRepository.sortFlightsByDESC(param);
     }
 
-//    public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats){
-//
-//
-//        List<Flight> resultFlights = new ArrayList<>() {};
-//        for(var flight : flightRepository.findAll()){
-//            if(id != null && flight.getId() == id) {
-//                resultFlights.add(flight);
-//            }
-//            else if(flightNumber != null && !flightNumber.isEmpty() && flight.getFlightNumber().equals(flightNumber)) resultFlights.add(flight);
-//            else if(startingPlace != null && !startingPlace.isEmpty() && flight.getStartingPlace().equals(startingPlace)) resultFlights.add(flight);
-//            else if(destination != null &&!destination.isEmpty() && flight.getDestination().equals(destination)) resultFlights.add(flight);
-//            else if(flightDate != null &&!flightDate.isEmpty()) {
-//                StringBuilder stringBuilder = new StringBuilder(flight.getFlightDate());
-//                StringBuilder stringBuilder2 = new StringBuilder(flightDate);
-//                stringBuilder.delete(10, 19);
-//                if(stringBuilder.compareTo(stringBuilder2) == 0) resultFlights.add(flight);
-//            }
-//            else if(seats != null && Objects.equals(flight.getSeats(), seats)) resultFlights.add(flight);
-//
-//        }
-//        return resultFlights;
-//    }
 public List<Flight> searchFlight(Long id, String flightNumber, String startingPlace, String destination, String flightDate, Integer seats) {
     return flightRepository.findAll().stream()
             .filter(flight -> id == null || Objects.equals(flight.getId(), id))

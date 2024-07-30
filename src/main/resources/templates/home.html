@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styleshome.css}">
+    <title>Fly Management System</title>
+</head>
+<body>
+<div th:replace="~{header}"></div>
+
+<div>
+
+</div>
+<main class="main-content container">
+    <section class="description">
+        <div class="description-item">
+            <h2>Create Flight</h2>
+            <p>
+                Create a flight for your passengers! Enter your flight number, departure and arrival airport, date and number of available seats. Be sure to create a flight with non-existent flight numbers.
+            </p>
+            <a class="btn bg-white" href="/create_flight">Create</a>
+        </div>
+        <div class="description-item">
+            <h2>Manage Flights</h2>
+            <p>
+                View, sort, and update flights by number, departure and arrival points, date, and available seats. Add or remove passengers, affecting seat availability. Deleting a flight will remove all associated passengers.
+            </p>
+            <a class="btn bg-white" href="/flights">Flights</a>
+        </div>
+        <div class="description-item">
+            <h2>Search Flight</h2>
+            <p>
+                Search your flight by flight id, flight number, starting place, destination, flight date or number of seats.
+            </p>
+            <a class="btn bg-white" href="/search_flight">Search</a>
+        </div>
+        <div class="description-item">
+            <h2>Manage Passengers</h2>
+            <p>
+                View all passengers and manage them. If you remove them, the number of seats on the flight will increase.
+            </p>
+            <a class="btn bg-white" href="/passengers">Manage</a>
+        </div>
+        <div class="description-item">
+            <h2>System Information</h2>
+            <p>
+                Whether you're managing a few flights or a large number, this system provides the tools you need to keep everything running smoothly.
+            </p>
+            <p>Running system version 2.1.3-RELEASE</p>
+        </div>
+    </section>
+</main>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

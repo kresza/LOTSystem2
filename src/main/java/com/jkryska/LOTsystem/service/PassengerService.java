@@ -46,23 +46,24 @@ public class PassengerService {
     }
 
     @Transactional
-    public String savePassenger(Passenger passenger, Model model) {
+    public void savePassenger(Passenger passenger, Model model, BindingResult result, Flight flight) {
         if (passenger == null) {
-            return "/create_passenger";
+            throw new AppException("Passenger is null", HttpStatus.BAD_REQUEST);
         }
-        Optional<Flight> optionalFlight = flightRepository.findById(passenger.getFlightID());
-        if (optionalFlight.isPresent()) {
-            Flight flight = optionalFlight.get();
             if (flight.getSeats() <= 0) {
-                model.addAttribute("flights", flightRepository.findAll());
+                model.addAttribute("flight", flight);
                 model.addAttribute("error", "Selected flight is full. Please choose another flight.");
-                return "/create_passenger";
+                throw new AppException("Selected flight is full. Please choose another flight", HttpStatus.BAD_REQUEST);
             }
-        }
+            if (result.hasErrors()) {
+                model.addAttribute("passenger", passenger);
+                model.addAttribute("flight", flight);
+                throw new AppException("Invalid data", HttpStatus.BAD_REQUEST);
+            }
         flightRepository.decrementSeatsByFlightId(passenger.getFlightID());
         passengerRepository.save(passenger);
-        return "redirect:/passengers";
-    }
+        }
+
 
     @Transactional
     public void deletePassenger(Long id) {
